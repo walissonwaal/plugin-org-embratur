@@ -1,0 +1,68 @@
+[
+  {
+    "id": 100,
+    "parentId": null,
+    "first_name": "Leonardo de Moura Persi",
+    "bio": "Bacharel em Administração de Empresas, Guia de Turismo Brasil e América do Sul. Tem pós-graduação em Ecoturismo - Senac/SP e Gestão de Pequenos Negócios - FGV/SP. É secretário das Comissões de Estudos Turismo de Aventura ABNT/CB-054 desde 2005, e Convenor ISO (International Standardization Organisation), pelo Technical Committee of Tourism and related services, Working Group 7 - Adventure Tourism, desde 2018.",
+    "department_name": "Coordenador de Natureza e Segmentos Especiais",
+    "phone": "(61) 2023-8875",
+    "email": "leonardo.persi@embratur.com.br",
+    "img_url": "https://bumbeishvili.github.io/avatars/avatars/portrait12.png",
+    "movie_url": "https://video-previews.elements.envatousercontent.com/h264-video-previews/82e6b9c6-8cfa-45af-920c-6a0071e44eea/10896366.mp4"
+  },
+  {
+    "id": 101,
+    "parentId": 100,
+    "first_name": "Ana Carolina Silva",
+    "bio": "Mestre em Gestão Cultural, com experiência em projetos culturais e eventos internacionais. Especialista em políticas públicas para a cultura.",
+    "department_name": "Gerente de Projetos Culturais",
+    "phone": "(61) 2023-9912",
+    "email": "ana.silva@cultura.gov.br",
+    "img_url": "https://bumbeishvili.github.io/avatars/avatars/portrait13.png",
+    "movie_url": "https://video-previews.elements.envatousercontent.com/40d09d95-d457-4ced-b0dc-10768be10b71/watermarked_preview/watermarked_preview.mp4"
+  },
+  {
+    "id": 102,
+    "parentId": 100,
+    "first_name": "Carlos Eduardo Rocha",
+    "bio": "Engenheiro com vasta experiência em gestão de projetos de infraestrutura. Atuante na área de energia renovável desde 2010.",
+    "department_name": "Diretor de Energia Renovável",
+    "phone": "(61) 2023-4456",
+    "email": "carlos.rocha@energia.gov.br",
+    "img_url": "https://bumbeishvili.github.io/avatars/avatars/portrait14.png",
+    "movie_url": "https://video-previews.elements.envatousercontent.com/0ddf570f-b0ed-418f-933b-6401484efcdb/watermarked_preview/watermarked_preview.mp4"
+  },
+  {
+    "id": 103,
+    "parentId": 101,
+    "first_name": "Juliana Menezes",
+    "bio": "Doutora em Biologia Molecular, com pesquisa focada em biotecnologia e inovação. Consultora em projetos de pesquisa e desenvolvimento.",
+    "department_name": "Consultora Científica",
+    "phone": "(61) 2023-5587",
+    "email": "juliana.menezes@ciencia.gov.br",
+    "img_url": "https://bumbeishvili.github.io/avatars/avatars/portrait15.png",
+    "movie_url": "https://video-previews.elements.envatousercontent.com/h264-video-previews/82e6b9c6-8cfa-45af-920c-6a0071e44eea/10896366.mp4"
+  },
+  {
+    "id": 104,
+    "parentId": 102,
+    "first_name": "Marcos Pereira",
+    "bio": "Economista com especialização em análise de dados e mercado financeiro. Experiência em consultoria empresarial e desenvolvimento de negócios.",
+    "department_name": "Analista Financeiro Sênior",
+    "phone": "(61) 2023-6698",
+    "email": "marcos.pereira@financas.gov.br",
+    "img_url": "https://bumbeishvili.github.io/avatars/avatars/portrait16.png",
+    "movie_url": "https://video-previews.elements.envatousercontent.com/h264-video-previews/82e6b9c6-8cfa-45af-920c-6a0071e44eea/10896366.mp4"
+  },
+  {
+    "id": 105,
+    "parentId": 102,
+    "first_name": "Larissa Gonçalves",
+    "bio": "Advogada especialista em direito corporativo e propriedade intelectual. Com mais de 10 anos de experiência em consultoria legal para startups e empresas de tecnologia.",
+    "department_name": "Chefe do Departamento Jurídico",
+    "phone": "(61) 2023-7789",
+    "email": "larissa.goncalves@legal.gov.br",
+    "img_url": "https://bumbeishvili.github.io/avatars/avatars/portrait17.png",
+    "movie_url": "https://video-previews.elements.envatousercontent.com/h264-video-previews/82e6b9c6-8cfa-45af-920c-6a0071e44eea/10896366.mp4"
+  }
+]
