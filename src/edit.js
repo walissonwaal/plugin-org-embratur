@@ -32,7 +32,7 @@ import './editor.scss';
 export default function Edit() {
 	return (
 		<p { ...useBlockProps() }>
-			{ __( 'Emb Org – hello from the editor!', 'emb-org' ) }
+			{ __( 'Organograma Embratur', 'emb-org' ) }
 		</p>
 	);
 }
