@@ -1,27 +1,29 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 	// importação dos cdn scripts e css
 	const body = document.body;
+	const head = document.head;
 
 	const cdnImportD3 = document.createElement("script");
-    cdnImportD3.src = "https://d3js.org/d3.v7.min.js";
-    cdnImportD3.onload = function () {
-        console.log("D3 carregado");
+	cdnImportD3.src = "https://d3js.org/d3.v7.min.js";
+	cdnImportD3.onload = function () {
+		console.log("D3 carregado");
 
-        const cdnImportD3OrgChart = document.createElement("script");
-        cdnImportD3OrgChart.src = "https://cdn.jsdelivr.net/npm/d3-org-chart@2.6.0";
-        cdnImportD3OrgChart.onload = function () {
-            console.log("D3 Org Chart carregado");
+		const cdnImportD3OrgChart = document.createElement("script");
+		cdnImportD3OrgChart.src = "https://cdn.jsdelivr.net/npm/d3-org-chart@2.6.0";
+		cdnImportD3OrgChart.onload = function () {
+			console.log("D3 Org Chart carregado");
 
-            const cdnImportD3Flextree = document.createElement("script");
-            cdnImportD3Flextree.src = "https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js";
-            cdnImportD3Flextree.onload = function () {
-                console.log("D3 Flextree carregado");
-            };
-            body.appendChild(cdnImportD3Flextree);
-        };
-        body.appendChild(cdnImportD3OrgChart);
-    };
-    body.appendChild(cdnImportD3);
+			const cdnImportD3Flextree = document.createElement("script");
+			cdnImportD3Flextree.src =
+				"https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js";
+			cdnImportD3Flextree.onload = function () {
+				console.log("D3 Flextree carregado");
+			};
+			body.appendChild(cdnImportD3Flextree);
+		};
+		body.appendChild(cdnImportD3OrgChart);
+	};
+	body.appendChild(cdnImportD3);
 
 	// Adiciona CSS para Font Awesome
 	const cdnImportD3FontAwesome = document.createElement("link");
@@ -34,12 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	if (container) {
 		console.log("Container obtido.");
-		fetch("/wp-json/emb-org/v1/membros/")
+		await fetch("/wp-json/emb-org/v1/membros/")
 			.then((response) => response.json())
 			.then((data) => {
 				// cdnImportD3OrgChart.onload = function () {
-					console.log("Dados recebidos:", data);
-					createOrganizationChart(container, data);
+				console.log("Dados recebidos:", data);
+				createOrganizationChart(container, data);
 				// };
 			})
 			.catch((error) => console.error("Erro ao buscar dados:", error));
@@ -53,11 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 
 		console.log("Iniciando a criação do organograma com dados:", data);
-
-		// Variável global para armazenamento dos dados da planilha
-		let dataFlattenedGlobal = data;
-		// Variável que armazena o nó atual
-		let currentNodeData = null;
 
 		let chart = new d3.OrgChart()
 			.container(container)
@@ -74,9 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			.siblingsMargin((d) => 25)
 			// Captura o click no nó
 			.onNodeClick((d) => {
-				// setData(d);
-				// handleOpenModal();
-				console.log(d);
+				setData(d);
+				handleOpenModal();
 			})
 			// Botão para exibir filhos dos nós
 			.buttonContent(({ node, state }) => {
@@ -216,6 +212,108 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
 			})
 			.render();
-			console.log("Organograma criado com sucesso.");
+		console.log("Organograma criado com sucesso.");
+
+		// Funções relacionadas ao modal
+
+		// Variável global para armazenamento dos dados da planilha
+		let dataFlattenedGlobal = data;
+		// Variável que armazena o nó atual
+		let currentNodeData = null;
+
+		// Obtém os dados do nó pelo id
+		function getNodeDataById(nodeId) {
+			return dataFlattenedGlobal.find((node) => node.id === nodeId);
+		}
+
+		// Atualiza o currentNodeData com os dados do nó clicado e o modal
+		function setData(nodeId) {
+			const nodeData = getNodeDataById(nodeId);
+			if (nodeData) {
+				currentNodeData = nodeData;
+				modalUpdate();
+			}
+		}
+
+		const modalHtml = `
+		<div id="video-container" class="video-container">
+        <video class="video-dimmed video" id="video" height="240" preload="metadata">
+          <source id="movie" src="" type="video/mp4">
+        </video>
+        <div id="play-button" class="play-button">&#9658;</div>
+        <div id="pause-button" class="pause-button" style="display: none;">&#10074;&#10074;</div>
+        <div id="progress-container" class="progress-container">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+      </div>
+      <div id="content" class="content">
+        <div class="title-container">
+          <h2 id="title"></h2>
+          <span class="close" onclick="handleCloseModal()">&times;</span>
+        </div>
+        <h4 id="department"></h4>
+        <span class="separator"></span>
+        <p id="body"></p>
+        <span class="separator"></span>
+        <div class="contact-container">
+          <span id="phone"></span>
+          <span id="email"></span>
+        </div>
+      </div>
+		`;
+
+		const modalBackgroundElement = document.createElement("div");
+		modalBackgroundElement.id = "modalBackground";
+		document.body.appendChild(modalBackgroundElement);
+		console.log("Modalbackground criado");
+
+		const modalElement = document.createElement("div");
+		modalElement.id = "modal";
+		modalElement.classList = "modal";
+		modalElement.innerHTML = modalHtml;
+		let modalBackground = document
+			.getElementById("modalBackground")
+			.appendChild(modalElement);
+		console.log("Modal criado");
+
+		// Atualiza o modal
+		function modalUpdate() {
+			if (currentNodeData) {
+				document.getElementById("title").textContent =
+					currentNodeData.first_name;
+				document.getElementById("department").textContent =
+					currentNodeData.department_name;
+				document.getElementById("body").textContent = currentNodeData.bio;
+				// document.getElementById('image').src = currentNodeData.img_url;
+
+				// Insere o source do vídeo
+				var source = document.getElementById("movie");
+				source.src = currentNodeData.movie_url;
+				// Carrega vídeo
+				video.load();
+
+				// icones do modal
+				// let phoneIconPath = "../imgs/phone.svg";
+				// let emailIconPath = "../imgs/mail.svg";
+
+				document.getElementById(
+					"phone",
+				).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="Telefone" /> ${currentNodeData.phone}</div>`;
+				document.getElementById(
+					"email",
+				).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="Telefone" /> ${currentNodeData.email}</div>`;
+			}
+		}
+
+		// Obtém o modal
+		let modal = document.getElementById("modal");
+
+		// Abre o modal
+		function handleOpenModal() {
+			modalUpdate();
+			// display inicial do modal aberto e do background
+			modal.style.display = "grid";
+			modalBackground.style.display = "flex";
+		}
 	}
 });

@@ -1,0 +1,171 @@
+#modalBackground {
+  position: fixed;
+  width: 100%;
+  height: 100svh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.modal {
+  grid-template-columns: 30% 1fr;
+  background-color: #fff;
+  border-radius: 25px;
+  width: 50rem;
+  margin: 0 4rem;
+
+  animation: modalAnimation 0.5s ease-in-out 0s 1 normal forwards;
+}
+
+.content {
+  padding: 1rem 2rem;
+  color: #7c7c7c;
+}
+
+.title-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#title {
+  font-size: 30px;
+  line-height: 37.8px;
+  margin: 0;
+  color: #0165b1;
+  font-weight: 700;
+}
+
+.close {
+  color: #7c7c7c;
+  font-size: 30px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.close:hover {
+  color: #7c7c7c8a;
+}
+
+#department {
+  font-size: 20px;
+  line-height: 24px;
+  margin: 0;
+  color: #7c7c7c;
+  font-weight: 300;
+}
+
+.separator {
+  display: block;
+  height: 1px;
+  width: 100%;
+  margin: 1.2rem 0;
+  background-color: #dedede;
+}
+
+#body {
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 300;
+  color: #7c7c7c;
+}
+
+.contact-container {
+  display: flex;
+  justify-content: space-between;
+  color: #7c7c7c;
+
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16.38px;
+}
+
+.icone-telefone {
+  width: 12px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 870px) {
+  .modal {
+    display: block !important;
+    max-height: 90%;
+    max-width: 70%;
+    overflow: auto;
+    border-radius: 25px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+  }
+  #resize-video {
+    display: none;
+  }
+  .separator {
+    margin: 1rem 0;
+  }
+  .content {
+    padding: 1rem 2rem;
+  }
+  #title {
+    font-size: 25px;
+    line-height: 24px;
+  }
+  #department {
+    font-size: 15px;
+    line-height: 20px;
+    margin: 0.5rem 0;
+  }
+  #body {
+    font-size: 14px;
+  }
+  /* Personaliza a barra de rolagem inteira */
+  ::-webkit-scrollbar {
+    width: 6px; /* Largura da barra de rolagem */
+    display: none;
+  }
+
+  /* Personaliza a trilha (caminho) da barra de rolagem */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Cor de fundo da trilha */
+  }
+
+  /* Personaliza o manipulador da barra de rolagem */
+  ::-webkit-scrollbar-thumb {
+    background: #0165b1; /* Cor de fundo do manipulador */
+  }
+
+  /* Muda a cor do manipulador ao passar o mouse sobre ele */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Cor de fundo do manipulador ao passar o mouse */
+  }
+  .close {
+    position: absolute;
+    top: 5;
+    right: 15;
+  }
+  .contact-container {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
