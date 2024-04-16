@@ -310,13 +310,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 				currentNodeData.phone && (
 					document.getElementById(
 						"phone",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="tel" /> ${currentNodeData.phone}</div>`
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" /> ${currentNodeData.phone}</div>`
 				)
 
 				currentNodeData.email && (
 					document.getElementById(
 						"email",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="email" /> ${currentNodeData.email}</div>`
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" /> ${currentNodeData.email}</div>`
 				)
 			}
 		}

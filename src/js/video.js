@@ -40,9 +40,15 @@ document.addEventListener("OrganogramaReady", function () {
 
 	video.addEventListener("ended", function () {
 		let videoContainer = document.getElementById("video-container");
-		videoContainer.style.transition = "width 0.5s ease-in-out";
-		videoContainer.classList.add("video-container");
-		video.removeAttribute("style");
+		video.style.objectFit = "";
+		videoContainer.style.position = "relative";
+		videoContainer.style.width = "";
+		videoContainer.style.height = "";
+		video.style.objectFit = "";
+		video.style.backgroundColor = "";
+		videoContainer.style.borderTopRightRadius = "";
+		videoContainer.style.borderBottomRightRadius = "";
+		content.style.display = ''
 
 		video.currentTime = 0;
 		video.pause();
@@ -63,16 +69,9 @@ document.addEventListener("OrganogramaReady", function () {
 	});
 
 	function togglePlayPause() {
-		let videoContainer = document.getElementById("video-container");
-
 		if (video.paused) {
+			expandedVideo()
 			// videoContainer.classList.remove("video-container");
-			video.style.objectFit = "center";
-			videoContainer.style.position = "absolute";
-			videoContainer.style.width = "100%";
-			videoContainer.style.height = "100%";
-			// video.style.objectFit = "center";
-			video.style.backgroundColor = "#000";
 			video.play();
 			video.classList.remove("video-dimmed");
 			playButton.style.display = "none";
@@ -86,6 +85,20 @@ document.addEventListener("OrganogramaReady", function () {
 			pauseButton.style.display = "none";
 			clearTimeout(pauseTimeout);
 		}
+	}
+
+	function expandedVideo() {
+		let videoContainer = document.getElementById("video-container");
+		let content = document.getElementById("content");
+		content.style.display = 'none'
+		video.style.objectFit = "center";
+		videoContainer.style.position = "absolute";
+		videoContainer.style.width = "100%";
+		// videoContainer.style.height = "100%";
+		videoContainer.style.borderTopRightRadius = "25px";
+		videoContainer.style.borderBottomRightRadius = "25px";
+		video.style.objectFit = "contain";
+		video.style.backgroundColor = "#000";
 	}
 
 	function autoHidePauseButton() {
