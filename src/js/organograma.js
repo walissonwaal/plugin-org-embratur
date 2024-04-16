@@ -235,6 +235,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 			}
 		}
 
+		// Oculta o modal e o background
+		function handleCloseModal() {
+			modalBackgroundElement.style.display = "none";
+		}
+
 		const modalHtml = `
 		<div id="video-container" class="video-container">
         <video class="video-dimmed video" id="video" height="240" preload="metadata">
@@ -264,7 +269,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 		const modalBackgroundElement = document.createElement("div");
 		modalBackgroundElement.id = "modalBackground";
-		document.body.appendChild(modalBackgroundElement);
+		modalBackgroundElement.style.display = "none";
+		container.appendChild(modalBackgroundElement);
 		console.log("Modalbackground criado");
 
 		const modalElement = document.createElement("div");
@@ -275,6 +281,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 			.getElementById("modalBackground")
 			.appendChild(modalElement);
 		console.log("Modal criado");
+
+		// Adiciona event listener ao botão de fechar
+		const closeButton = modalElement.querySelector(".close");
+		closeButton.addEventListener("click", handleCloseModal);
 
 		// Atualiza o modal
 		function modalUpdate() {
@@ -290,18 +300,24 @@ document.addEventListener("DOMContentLoaded", async function () {
 				var source = document.getElementById("movie");
 				source.src = currentNodeData.movie_url;
 				// Carrega vídeo
+				var video = document.getElementById('video');
 				video.load();
 
 				// icones do modal
 				// let phoneIconPath = "../imgs/phone.svg";
 				// let emailIconPath = "../imgs/mail.svg";
 
-				document.getElementById(
-					"phone",
-				).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="Telefone" /> ${currentNodeData.phone}</div>`;
-				document.getElementById(
-					"email",
-				).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="Telefone" /> ${currentNodeData.email}</div>`;
+				currentNodeData.phone && (
+					document.getElementById(
+						"phone",
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="tel" /> ${currentNodeData.phone}</div>`
+				)
+
+				currentNodeData.email && (
+					document.getElementById(
+						"email",
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" alt="email" /> ${currentNodeData.email}</div>`
+				)
 			}
 		}
 
@@ -312,8 +328,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 		function handleOpenModal() {
 			modalUpdate();
 			// display inicial do modal aberto e do background
+			modalBackgroundElement.style.display = "flex";
 			modal.style.display = "grid";
-			modalBackground.style.display = "flex";
 		}
+
+		// Fecha modal ao clicar fora
+		window.onclick = function (event) {
+			if (event.target === modalBackgroundElement) {
+				modalBackgroundElement.style.display = "none";
+				modal.style.display = "none";
+			}
+		};
 	}
+
+	document.dispatchEvent(new CustomEvent('OrganogramaReady'));
 });

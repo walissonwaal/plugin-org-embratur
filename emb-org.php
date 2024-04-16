@@ -111,11 +111,14 @@ function render_organograma_block() {
 // STYLES
 function emb_org_enqueue_styles() {
 	wp_enqueue_style('modal-css', plugin_dir_url(__FILE__) . './src/css/modal.css');
+	wp_enqueue_style('video-css', plugin_dir_url(__FILE__) . './src/css/video.css');
 }
+
 add_action('wp_enqueue_scripts', 'emb_org_enqueue_styles');
 
 // JS ORGANOGRAMA
 function emb_org_enqueue_scripts() {
 	wp_enqueue_script('organograma-js', plugin_dir_url(__FILE__) . './src/js/organograma.js', array(), '1.0.0', true);
+	wp_enqueue_script('video-js', plugin_dir_url(__FILE__) . './src/js/video.js', array('organograma-js'), '1.0.0', true);
 }
 add_action('wp_enqueue_scripts', 'emb_org_enqueue_scripts');
