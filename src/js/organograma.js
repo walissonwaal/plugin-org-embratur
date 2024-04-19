@@ -74,16 +74,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 			.nodeWidth((d) => {
 				return 300;
 			})
-			.nodeUpdate(function (d) {
-				d3.select(this)
-					.select('.node')
-					.on('click.node', (e, d) => {
-						chart.onButtonClick(e, d);
-					});
+			// .nodeUpdate(function (d) {
+			// 	d3.select(this)
+			// 		.select('.node')
+			// 		.on('click.node', (e, d) => {
+			// 			chart.onButtonClick(e, d);
+			// 		});
 
-				d3.select(this).select('.node-button-foreign-object').remove();
-			})
-			.setActiveNodeCentered(false)
+			// 	d3.select(this).select('.node-button-foreign-object').remove();
+			// })
+			// .setActiveNodeCentered(false)
 			.childrenMargin((d) => 100)
 			.compactMarginBetween((d) => 100)
 			.compactMarginPair((d) => 100)
@@ -104,6 +104,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 				// return `<div style="position: relative;bottom: 20px;color:#4B4B4B;border-radius:3px;width:20px; height: 20px; display: flex; justify-content: center; align-items: center;font-size:16px;margin:auto auto;background-color:#D9D9D9;border: 1px solid #E4E2E9"> <span style="font-size:9px"></span> ${node.data._directSubordinates}</div>`;
 			})
 			.linkUpdate(function (d, i, arr) {
+				console.log(d);
 				d3.select(this)
 					.attr("stroke", (d) =>
 						d.data._upToTheRootHighlighted ? "#152785" : "#E4E2E9",
@@ -125,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 				return `
             <div class="container" style="font-family: 'Raleway', sans-serif; font-weight:700; ;background-color:${color}; position:absolute;margin-top:-1px; margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:20px;">
               <div class="top-bar-container">
-								<div style="background-color: ${presidencia && '#0165B1' || diretoria_de_gestao_e_inovacao && '#107b49' || diretoriai_de_marketing_internacional && '#c84924'}" class="top-bar"></div>
+								<div style="background-color: ${presidencia && '#0165B1' || diretoria_de_gestao_e_inovacao && '#107b49' || diretoriai_de_marketing_internacional && '#FCD900'}" class="top-bar"></div>
               </div>
               <div style="display: flex; justify-content: center;">
                 <img src="${d.data.img_url}" style="position: absolute; margin-top: -50px; border-radius: 100px; width: 100px; height: 100px; object-fit: cover; border: 4px solid white;" />
@@ -218,7 +219,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             .svg-chart-container {
-              background-color:  #fff;
+              background-color: #fff;
             }
 
             .svg-chart-container:before {
