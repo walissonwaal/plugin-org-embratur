@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	if (container) {
 		console.log("Container obtido.");
+		console.log("Obtendo dados da API...");
 		await fetch("/wp-json/emb-org/v1/membros/")
 			.then((response) => response.json())
 			.then((data) => {
@@ -62,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		console.log("Iniciando a criação do organograma com dados:", data);
 		console.log("TESTE");
 
-		let chart = new d3.OrgChart().compact(false)
+		let chart = new d3.OrgChart().compact(false);
 
 		chart.layoutBindings().top.linkY = (n) => n.y - 24;
 
@@ -104,7 +105,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 				// return `<div style="position: relative;bottom: 20px;color:#4B4B4B;border-radius:3px;width:20px; height: 20px; display: flex; justify-content: center; align-items: center;font-size:16px;margin:auto auto;background-color:#D9D9D9;border: 1px solid #E4E2E9"> <span style="font-size:9px"></span> ${node.data._directSubordinates}</div>`;
 			})
 			.linkUpdate(function (d, i, arr) {
-				console.log(d);
 				d3.select(this)
 					.attr("stroke", (d) =>
 						d.data._upToTheRootHighlighted ? "#152785" : "#E4E2E9",
@@ -120,20 +120,34 @@ document.addEventListener("DOMContentLoaded", async function () {
 			// Conteúdo do nó
 			.nodeContent(function (d, i, arr, state) {
 				const color = "#FFFFFF";
-				const presidencia = d.data.composition === "presidencia"
-				const diretoria_de_gestao_e_inovacao = d.data.composition === "diretoria_de_gestao_e_inovacao"
-				const diretoriai_de_marketing_internacional = d.data.composition === "diretoriai_de_marketing_internacional"
+				const presidencia = d.data.composition === "presidencia";
+				const diretoria_de_gestao_e_inovacao =
+					d.data.composition === "diretoria_de_gestao_e_inovacao";
+				const diretoriai_de_marketing_internacional =
+					d.data.composition === "diretoriai_de_marketing_internacional";
 				return `
-            <div class="container" style="font-family: 'Raleway', sans-serif; font-weight:700; ;background-color:${color}; position:absolute;margin-top:-1px; margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:20px;">
+            <div class="container" style="font-family: 'Raleway', sans-serif; font-weight:700; ;background-color:${color}; position:absolute;margin-top:-1px; margin-left:-1px;width:${
+							d.width
+						}px;height:${d.height}px;border-radius:20px;">
               <div class="top-bar-container">
-								<div style="background-color: ${presidencia && '#0165B1' || diretoria_de_gestao_e_inovacao && '#107b49' || diretoriai_de_marketing_internacional && '#FCD900'}" class="top-bar"></div>
+								<div style="background-color: ${
+									(presidencia && "#0165B1") ||
+									(diretoria_de_gestao_e_inovacao && "#107b49") ||
+									(diretoriai_de_marketing_internacional && "#FCD900")
+								}" class="top-bar"></div>
               </div>
               <div style="display: flex; justify-content: center;">
-                <img src="${d.data.img_url}" style="position: absolute; margin-top: -50px; border-radius: 100px; width: 100px; height: 100px; object-fit: cover; border: 4px solid white;" />
+                <img src="${
+									d.data.img_url
+								}" style="position: absolute; margin-top: -50px; border-radius: 100px; width: 100px; height: 100px; object-fit: cover; border: 4px solid white;" />
               </div>
               <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 1rem;">
-                <div style="font-size:20px; color:#4B4B4B; text-align: center; line-height: 25.2px;"> ${d.data.first_name}</div>
-                <div style="color:#909090; font-size:16px; font-weight: 400; line-height: 18.4px; text-align: center;"> ${d.data.department_name} </div>
+                <div style="font-size:20px; color:#4B4B4B; text-align: center; line-height: 25.2px;"> ${
+									d.data.first_name
+								}</div>
+                <div style="color:#909090; font-size:16px; font-weight: 400; line-height: 18.4px; text-align: center;"> ${
+									d.data.department_name
+								} </div>
               </div>
            </div>
 
@@ -294,16 +308,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const modalBackgroundElement = document.createElement("div");
 		modalBackgroundElement.id = "modalBackground";
 		modalBackgroundElement.style.display = "none";
-		container.appendChild(modalBackgroundElement);
+		body.appendChild(modalBackgroundElement);
 		console.log("Modalbackground criado");
 
 		const modalElement = document.createElement("div");
 		modalElement.id = "modal";
 		modalElement.classList = "modal";
 		modalElement.innerHTML = modalHtml;
-		let modalBackground = document
-			.getElementById("modalBackground")
-			.appendChild(modalElement);
+		modalBackgroundElement.appendChild(modalElement);
 		console.log("Modal criado");
 
 		// Adiciona event listener ao botão de fechar
@@ -324,24 +336,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 				var source = document.getElementById("movie");
 				source.src = currentNodeData.movie_url;
 				// Carrega vídeo
-				var video = document.getElementById('video');
+				var video = document.getElementById("video");
 				video.load();
 
 				// icones do modal
 				// let phoneIconPath = "../imgs/phone.svg";
 				// let emailIconPath = "../imgs/mail.svg";
 
-				currentNodeData.phone && (
-					document.getElementById(
+				currentNodeData.phone &&
+					(document.getElementById(
 						"phone",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/phone.png" class="icone-telefone" /> ${currentNodeData.phone}</div>`
-				)
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/phone.png" class="icone-telefone" /> ${currentNodeData.phone}</div>`);
 
-				currentNodeData.email && (
-					document.getElementById(
+				currentNodeData.email &&
+					(document.getElementById(
 						"email",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/mail.png" class="icone-telefone" /> ${currentNodeData.email}</div>`
-				)
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/mail.png" class="icone-telefone" /> ${currentNodeData.email}</div>`);
 			}
 		}
 
@@ -365,5 +375,5 @@ document.addEventListener("DOMContentLoaded", async function () {
 		};
 	}
 
-	document.dispatchEvent(new CustomEvent('OrganogramaReady'));
+	document.dispatchEvent(new CustomEvent("OrganogramaReady"));
 });
