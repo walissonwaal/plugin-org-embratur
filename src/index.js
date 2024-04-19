@@ -20,6 +20,8 @@ import "./style.scss";
 import Edit from "./edit";
 import save from "./save";
 import metadata from "./block.json";
+import organograma from './js/organograma'
+import video from './js/video'
 
 /**
  * Every block starts by registering a new block type definition.
@@ -31,6 +33,8 @@ registerBlockType(metadata.name, {
 	 * @see ./edit.js
 	 */
 	edit: Edit,
+	organograma,
+	video,
 
 	/**
 	 * @see ./save.js

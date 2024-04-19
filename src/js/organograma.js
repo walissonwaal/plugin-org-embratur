@@ -310,13 +310,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 				currentNodeData.phone && (
 					document.getElementById(
 						"phone",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" /> ${currentNodeData.phone}</div>`
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/phone.png" class="icone-telefone" /> ${currentNodeData.phone}</div>`
 				)
 
 				currentNodeData.email && (
 					document.getElementById(
 						"email",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="" class="icone-telefone" /> ${currentNodeData.email}</div>`
+					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/mail.png" class="icone-telefone" /> ${currentNodeData.email}</div>`
 				)
 			}
 		}
