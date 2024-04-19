@@ -39,6 +39,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 		await fetch("/wp-json/emb-org/v1/membros/")
 			.then((response) => response.json())
 			.then((data) => {
+				const [min, max] = d3.extent(data, (d) => d.value);
+				const radiusScale = d3.scaleSqrt().domain([min, max]).range([10, 100]);
+				data.forEach((d) => {
+					d._radius = Math.round(radiusScale(d.value) * 10) / 10;
+				});
 				// cdnImportD3OrgChart.onload = function () {
 				console.log("Dados recebidos:", data);
 				createOrganizationChart(container, data);
@@ -55,8 +60,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 
 		console.log("Iniciando a criação do organograma com dados:", data);
+		console.log("TESTE");
 
-		let chart = new d3.OrgChart()
+		let chart = new d3.OrgChart().compact(false)
+
+		chart.layoutBindings().top.linkY = (n) => n.y - 24;
+
+		chart
 			.container(container)
 			.svgHeight(window.innerHeight)
 			.data(data && data)
@@ -64,6 +74,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 			.nodeWidth((d) => {
 				return 300;
 			})
+			.nodeUpdate(function (d) {
+				d3.select(this)
+					.select('.node')
+					.on('click.node', (e, d) => {
+						chart.onButtonClick(e, d);
+					});
+
+				d3.select(this).select('.node-button-foreign-object').remove();
+			})
+			.setActiveNodeCentered(false)
 			.childrenMargin((d) => 100)
 			.compactMarginBetween((d) => 100)
 			.compactMarginPair((d) => 100)
@@ -99,10 +119,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 			// Conteúdo do nó
 			.nodeContent(function (d, i, arr, state) {
 				const color = "#FFFFFF";
+				const presidencia = d.data.composition === "presidencia"
+				const diretoria_de_gestao_e_inovacao = d.data.composition === "diretoria_de_gestao_e_inovacao"
+				const diretoriai_de_marketing_internacional = d.data.composition === "diretoriai_de_marketing_internacional"
 				return `
             <div class="container" style="font-family: 'Raleway', sans-serif; font-weight:700; ;background-color:${color}; position:absolute;margin-top:-1px; margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:20px;">
               <div class="top-bar-container">
-                <div class="top-bar"></div>
+								<div style="background-color: ${presidencia && '#0165B1' || diretoria_de_gestao_e_inovacao && '#107b49' || diretoriai_de_marketing_internacional && '#c84924'}" class="top-bar"></div>
               </div>
               <div style="display: flex; justify-content: center;">
                 <img src="${d.data.img_url}" style="position: absolute; margin-top: -50px; border-radius: 100px; width: 100px; height: 100px; object-fit: cover; border: 4px solid white;" />

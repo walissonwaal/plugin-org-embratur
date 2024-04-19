@@ -91,6 +91,7 @@ function get_organograma_data()
 			'email' => get_field('email'),
 			'img_url' => get_field('img_url'),
 			'movie_url' => get_field('movie_url'),
+			'composition' => get_field('composition'),
 		);
 
 		array_push($membros, $membro);
