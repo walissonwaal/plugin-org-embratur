@@ -161,6 +161,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const container = document.getElementById("organograma-container");
   if (container) {
     console.log("Container obtido.");
+    console.log("Obtendo dados da API...");
     await fetch("/wp-json/emb-org/v1/membros/").then(response => response.json()).then(data => {
       const [min, max] = d3.extent(data, d => d.value);
       const radiusScale = d3.scaleSqrt().domain([min, max]).range([10, 100]);
@@ -224,7 +225,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       return `
             <div class="container" style="font-family: 'Raleway', sans-serif; font-weight:700; ;background-color:${color}; position:absolute;margin-top:-1px; margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:20px;">
               <div class="top-bar-container">
-								<div style="background-color: ${presidencia && '#0165B1' || diretoria_de_gestao_e_inovacao && '#107b49' || diretoriai_de_marketing_internacional && '#FCD900'}" class="top-bar"></div>
+								<div style="background-color: ${presidencia && "#0165B1" || diretoria_de_gestao_e_inovacao && "#107b49" || diretoriai_de_marketing_internacional && "#FCD900"}" class="top-bar"></div>
               </div>
               <div style="display: flex; justify-content: center;">
                 <img src="${d.data.img_url}" style="position: absolute; margin-top: -50px; border-radius: 100px; width: 100px; height: 100px; object-fit: cover; border: 4px solid white;" />
@@ -389,13 +390,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     const modalBackgroundElement = document.createElement("div");
     modalBackgroundElement.id = "modalBackground";
     modalBackgroundElement.style.display = "none";
-    container.appendChild(modalBackgroundElement);
+    body.appendChild(modalBackgroundElement);
     console.log("Modalbackground criado");
     const modalElement = document.createElement("div");
     modalElement.id = "modal";
     modalElement.classList = "modal";
     modalElement.innerHTML = modalHtml;
-    let modalBackground = document.getElementById("modalBackground").appendChild(modalElement);
+    modalBackgroundElement.appendChild(modalElement);
     console.log("Modal criado");
 
     // Adiciona event listener ao botão de fechar
@@ -414,7 +415,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         var source = document.getElementById("movie");
         source.src = currentNodeData.movie_url;
         // Carrega vídeo
-        var video = document.getElementById('video');
+        var video = document.getElementById("video");
         video.load();
 
         // icones do modal
@@ -445,7 +446,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     };
   }
-  document.dispatchEvent(new CustomEvent('OrganogramaReady'));
+  document.dispatchEvent(new CustomEvent("OrganogramaReady"));
 });
 
 /***/ }),
@@ -488,6 +489,8 @@ document.addEventListener("OrganogramaReady", function () {
     }
   });
   video.addEventListener("ended", function () {
+    let content = document.getElementById("content");
+    content.style.display = '';
     let videoContainer = document.getElementById("video-container");
     video.style.objectFit = "";
     videoContainer.style.position = "relative";
@@ -533,10 +536,10 @@ document.addEventListener("OrganogramaReady", function () {
     }
   }
   function expandedVideo() {
+    console.log("EXPANDED VIDEO");
     let videoContainer = document.getElementById("video-container");
     let content = document.getElementById("content");
-    // content.style.display = 'none'
-    video.style.objectFit = "center";
+    content.style.display = 'none';
     videoContainer.style.position = "absolute";
     videoContainer.style.width = "100%";
     // videoContainer.style.height = "100%";

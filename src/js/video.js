@@ -39,6 +39,8 @@ document.addEventListener("OrganogramaReady", function () {
 	});
 
 	video.addEventListener("ended", function () {
+		let content = document.getElementById("content");
+		content.style.display = ''
 		let videoContainer = document.getElementById("video-container");
 		video.style.objectFit = "";
 		videoContainer.style.position = "relative";
@@ -88,10 +90,10 @@ document.addEventListener("OrganogramaReady", function () {
 	}
 
 	function expandedVideo() {
+		console.log("EXPANDED VIDEO");
 		let videoContainer = document.getElementById("video-container");
 		let content = document.getElementById("content");
-		// content.style.display = 'none'
-		video.style.objectFit = "center";
+		content.style.display = 'none'
 		videoContainer.style.position = "absolute";
 		videoContainer.style.width = "100%";
 		// videoContainer.style.height = "100%";
