@@ -167,11 +167,7 @@ svg.svg-chart-container {
   ::-webkit-scrollbar-thumb:hover {
     background: #555; /* Cor de fundo do manipulador ao passar o mouse */
   }
-  .close {
-    position: absolute;
-    top: 5;
-    right: 15;
-  }
+
   .contact-container {
     gap: 0.5rem;
     flex-wrap: wrap;

@@ -87,6 +87,8 @@ video {
     width: 100%;
     padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
     height: 0;
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
   }
   .video {
     border-radius: 0 !important;
@@ -97,4 +99,11 @@ video {
     width: 100%;
     height: 100%;
   }
+	.close-video {
+		display: flex;
+		color: #7c7c7c;
+		font-size: 30px;
+		cursor: pointer;
+		transition: 0.3s ease-in-out;
+	}
 }
