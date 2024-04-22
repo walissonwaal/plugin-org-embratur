@@ -371,6 +371,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         <div id="progress-container" class="progress-container">
           <div id="progress-bar" class="progress-bar"></div>
         </div>
+				<span class="close-video">&times;</span>
       </div>
       <div id="content" class="content">
         <div class="title-container">
@@ -489,19 +490,15 @@ document.addEventListener("OrganogramaReady", function () {
     }
   });
   video.addEventListener("ended", function () {
-    let content = document.getElementById("content");
-    content.style.display = '';
     let videoContainer = document.getElementById("video-container");
-    video.style.objectFit = "";
-    videoContainer.style.position = "relative";
-    videoContainer.style.width = "";
-    videoContainer.style.height = "";
-    video.style.objectFit = "";
+    let content = document.getElementById("content");
+    let modal = document.getElementById("modal");
+    videoContainer.classList.add("video-container");
+    video.style.objectFit = "cover";
     video.style.backgroundColor = "";
-    videoContainer.style.borderTopRightRadius = "";
-    videoContainer.style.borderBottomRightRadius = "";
-    // content.style.display = 'flex'
-
+    video.style.borderTopLeftRadius = "25px";
+    video.style.borderBottomLeftRadius = "25px";
+    video.style.position = "";
     video.currentTime = 0;
     video.pause();
     video.classList.add("video-dimmed");
@@ -518,10 +515,24 @@ document.addEventListener("OrganogramaReady", function () {
     }
   });
   function togglePlayPause() {
+    var videoContainer = document.getElementById("video-container");
+    var video = document.getElementById("video");
+    let modal = document.getElementById("modal");
+    let closeVideo = document.querySelector(".close-video");
     if (video.paused) {
-      expandedVideo();
+      modal.style.borderRadius = "25px";
+      modal.style.overflow = "hidden";
+      videoContainer.classList.remove("video-container");
+      video.style.width = "100%";
+      video.style.position = "absolute";
+      video.style.objectFit = "contain";
       video.play();
       video.classList.remove("video-dimmed");
+      closeVideo.style.display = "flex";
+      closeVideo.style.position = "absolute";
+      closeVideo.style.zIndex = "99999";
+      closeVideo.style.top = "2rem";
+      closeVideo.style.right = "2rem";
       playButton.style.display = "none";
       pauseButton.style.display = "block";
       progressContainer.style.display = "block";
@@ -533,16 +544,6 @@ document.addEventListener("OrganogramaReady", function () {
       pauseButton.style.display = "none";
       clearTimeout(pauseTimeout);
     }
-  }
-  function expandedVideo() {
-    console.log("EXPANDED VIDEO");
-    let videoContainer = document.getElementById("video-container");
-    let content = document.getElementById("content");
-    let modal = document.getElementById("modal");
-    modal;
-    videoContainer.classList.remove("video-container");
-    video.style.objectFit = "contain";
-    video.style.backgroundColor = "#000";
   }
   function autoHidePauseButton() {
     clearTimeout(pauseTimeout);

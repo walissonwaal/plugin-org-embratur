@@ -278,6 +278,31 @@ document.addEventListener("DOMContentLoaded", async function () {
 			modalBackgroundElement.style.display = "none";
 		}
 
+			// Fecha o vídeo
+	function handleCloseVideo() {
+		let videoContainer = document.getElementById("video-container");
+		let closeVideo = document.querySelector(".close-video");
+		let playButton = document.getElementById("play-button");
+		let pauseButton = document.getElementById("pause-button");
+		let progressContainer = document.getElementById("progress-container");
+
+		videoContainer.classList.add("video-container");
+		video.style.objectFit = "cover";
+		video.style.backgroundColor = "";
+		video.style.borderTopLeftRadius = "25px";
+		video.style.borderBottomLeftRadius = "25px";
+
+		closeVideo.style.display = "none";
+
+		video.style.position = "";
+		video.currentTime = 0;
+		video.pause();
+		video.classList.add("video-dimmed");
+		progressContainer.style.display = "none";
+		playButton.style.display = "block";
+		pauseButton.style.display = "none";
+	}
+
 		const modalHtml = `
 		<div id="video-container" class="video-container">
         <video class="video-dimmed video" id="video" height="240" preload="metadata">
@@ -288,11 +313,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         <div id="progress-container" class="progress-container">
           <div id="progress-bar" class="progress-bar"></div>
         </div>
+				<span class="close-video">&times;</span>
       </div>
       <div id="content" class="content">
         <div class="title-container">
           <h2 id="title"></h2>
-          <span class="close" onclick="handleCloseModal()">&times;</span>
+          <span class="close">&times;</span>
         </div>
         <h4 id="department"></h4>
         <span class="separator"></span>
@@ -318,9 +344,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 		modalBackgroundElement.appendChild(modalElement);
 		console.log("Modal criado");
 
-		// Adiciona event listener ao botão de fechar
-		const closeButton = modalElement.querySelector(".close");
-		closeButton.addEventListener("click", handleCloseModal);
+		// Adiciona event listener ao botão de fechar modal
+		const closeButtonModal = modalElement.querySelector(".close");
+		closeButtonModal.addEventListener("click", handleCloseModal);
+
+		// Adiciona event listener ao botão de fechar video
+		const closeButtonVideo = modalElement.querySelector(".close-video");
+		closeButtonVideo.addEventListener("click", handleCloseVideo);
 
 		// Atualiza o modal
 		function modalUpdate() {
@@ -370,7 +400,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		window.onclick = function (event) {
 			if (event.target === modalBackgroundElement) {
 				modalBackgroundElement.style.display = "none";
-				modal.style.display = "none";
+				// modal.style.display = "none";
 			}
 		};
 	}
