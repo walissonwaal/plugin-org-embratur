@@ -17,6 +17,7 @@ svg.svg-chart-container {
 }
 
 .modal {
+	display: grid;
   grid-template-columns: 30% 1fr;
   background-color: #fff;
   border-radius: 25px;

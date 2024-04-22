@@ -39,19 +39,17 @@ document.addEventListener("OrganogramaReady", function () {
 	});
 
 	video.addEventListener("ended", function () {
-		let content = document.getElementById("content");
-		content.style.display = ''
 		let videoContainer = document.getElementById("video-container");
-		video.style.objectFit = "";
-		videoContainer.style.position = "relative";
-		videoContainer.style.width = "";
-		videoContainer.style.height = "";
-		video.style.objectFit = "";
-		video.style.backgroundColor = "";
-		videoContainer.style.borderTopRightRadius = "";
-		videoContainer.style.borderBottomRightRadius = "";
-		// content.style.display = 'flex'
+		let content = document.getElementById("content");
+		let modal = document.getElementById("modal");
 
+		videoContainer.classList.add("video-container");
+		video.style.objectFit = "cover";
+		video.style.backgroundColor = "";
+		video.style.borderTopLeftRadius = "25px";
+		video.style.borderBottomLeftRadius = "25px";
+
+		video.style.position = "";
 		video.currentTime = 0;
 		video.pause();
 		video.classList.add("video-dimmed");
@@ -71,11 +69,20 @@ document.addEventListener("OrganogramaReady", function () {
 	});
 
 	function togglePlayPause() {
+		var videoContainer = document.getElementById("video-container");
+		var video = document.getElementById("video");
+		let modal = document.getElementById("modal");
+
 		if (video.paused) {
-			expandedVideo()
-			// videoContainer.classList.remove("video-container");
+			modal.style.borderRadius = "25px"
+			modal.style.overflow = "hidden"
+			videoContainer.classList.remove("video-container");
+			video.style.width = "100%";
+			video.style.position = "absolute";
+			video.style.objectFit = "contain";
 			video.play();
 			video.classList.remove("video-dimmed");
+
 			playButton.style.display = "none";
 			pauseButton.style.display = "block";
 			progressContainer.style.display = "block";
@@ -87,20 +94,6 @@ document.addEventListener("OrganogramaReady", function () {
 			pauseButton.style.display = "none";
 			clearTimeout(pauseTimeout);
 		}
-	}
-
-	function expandedVideo() {
-		console.log("EXPANDED VIDEO");
-		let videoContainer = document.getElementById("video-container");
-		let content = document.getElementById("content");
-		content.style.display = 'none'
-		videoContainer.style.position = "absolute";
-		videoContainer.style.width = "100%";
-		// videoContainer.style.height = "100%";
-		videoContainer.style.borderTopRightRadius = "25px";
-		videoContainer.style.borderBottomRightRadius = "25px";
-		video.style.objectFit = "contain";
-		video.style.backgroundColor = "#000";
 	}
 
 	function autoHidePauseButton() {

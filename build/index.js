@@ -435,7 +435,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       modalUpdate();
       // display inicial do modal aberto e do background
       modalBackgroundElement.style.display = "flex";
-      modal.style.display = "grid";
+      // modal.style.display = "grid";
     }
 
     // Fecha modal ao clicar fora
@@ -520,7 +520,6 @@ document.addEventListener("OrganogramaReady", function () {
   function togglePlayPause() {
     if (video.paused) {
       expandedVideo();
-      // videoContainer.classList.remove("video-container");
       video.play();
       video.classList.remove("video-dimmed");
       playButton.style.display = "none";
@@ -539,12 +538,9 @@ document.addEventListener("OrganogramaReady", function () {
     console.log("EXPANDED VIDEO");
     let videoContainer = document.getElementById("video-container");
     let content = document.getElementById("content");
-    content.style.display = 'none';
-    videoContainer.style.position = "absolute";
-    videoContainer.style.width = "100%";
-    // videoContainer.style.height = "100%";
-    videoContainer.style.borderTopRightRadius = "25px";
-    videoContainer.style.borderBottomRightRadius = "25px";
+    let modal = document.getElementById("modal");
+    modal;
+    videoContainer.classList.remove("video-container");
     video.style.objectFit = "contain";
     video.style.backgroundColor = "#000";
   }

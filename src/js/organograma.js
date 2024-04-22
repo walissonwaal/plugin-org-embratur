@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			modalUpdate();
 			// display inicial do modal aberto e do background
 			modalBackgroundElement.style.display = "flex";
-			modal.style.display = "grid";
+			// modal.style.display = "grid";
 		}
 
 		// Fecha modal ao clicar fora
