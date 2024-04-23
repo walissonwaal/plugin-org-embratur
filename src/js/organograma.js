@@ -123,8 +123,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 				const presidencia = d.data.composition === "presidencia";
 				const diretoria_de_gestao_e_inovacao =
 					d.data.composition === "diretoria_de_gestao_e_inovacao";
-				const diretoriai_de_marketing_internacional =
-					d.data.composition === "diretoriai_de_marketing_internacional";
+				const diretoria_de_marketing_internacional =
+					d.data.composition === "diretoria_de_marketing_internacional";
 				return `
             <div class="container" style="font-family: 'Raleway', sans-serif; font-weight:700; ;background-color:${color}; position:absolute;margin-top:-1px; margin-left:-1px;width:${
 							d.width
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 								<div style="background-color: ${
 									(presidencia && "#0165B1") ||
 									(diretoria_de_gestao_e_inovacao && "#107b49") ||
-									(diretoriai_de_marketing_internacional && "#FCD900")
+									(diretoria_de_marketing_internacional && "#FCD900")
 								}" class="top-bar"></div>
               </div>
               <div style="display: flex; justify-content: center;">
@@ -278,30 +278,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 			modalBackgroundElement.style.display = "none";
 		}
 
-			// Fecha o vídeo
-	function handleCloseVideo() {
-		let videoContainer = document.getElementById("video-container");
-		let closeVideo = document.querySelector(".close-video");
-		let playButton = document.getElementById("play-button");
-		let pauseButton = document.getElementById("pause-button");
-		let progressContainer = document.getElementById("progress-container");
+		// Fecha o vídeo
+		function handleCloseVideo() {
+			let videoContainer = document.getElementById("video-container");
+			let closeVideo = document.querySelector(".close-video");
+			let playButton = document.getElementById("play-button");
+			let pauseButton = document.getElementById("pause-button");
+			let progressContainer = document.getElementById("progress-container");
 
-		videoContainer.classList.add("video-container");
-		video.style.objectFit = "cover";
-		video.style.backgroundColor = "";
-		video.style.borderTopLeftRadius = "25px";
-		video.style.borderBottomLeftRadius = "25px";
+			videoContainer.classList.add("video-container");
+			video.style.objectFit = "cover";
+			video.style.backgroundColor = "";
+			video.style.borderTopLeftRadius = "25px";
+			video.style.borderBottomLeftRadius = "25px";
 
-		closeVideo.style.display = "none";
+			closeVideo.style.display = "none";
 
-		video.style.position = "";
-		video.currentTime = 0;
-		video.pause();
-		video.classList.add("video-dimmed");
-		progressContainer.style.display = "none";
-		playButton.style.display = "block";
-		pauseButton.style.display = "none";
-	}
+			video.style.position = "";
+			video.currentTime = 0;
+			video.pause();
+			video.classList.add("video-dimmed");
+			progressContainer.style.display = "none";
+			playButton.style.display = "block";
+			pauseButton.style.display = "none";
+		}
 
 		const modalHtml = `
 		<div id="video-container" class="video-container">
@@ -355,11 +355,26 @@ document.addEventListener("DOMContentLoaded", async function () {
 		// Atualiza o modal
 		function modalUpdate() {
 			if (currentNodeData) {
-				document.getElementById("title").textContent =
-					currentNodeData.first_name;
-				document.getElementById("department").textContent =
-					currentNodeData.department_name;
-				document.getElementById("body").textContent = currentNodeData.bio;
+				let modalTitle = document.getElementById("title");
+				modalTitle.textContent = currentNodeData.first_name;
+
+				if (currentNodeData.composition === "presidencia") {
+					modalTitle.style.color = "#0165B1";
+				}
+
+				if (currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+					modalTitle.style.color = "#107b49";
+				}
+
+				if (currentNodeData.composition === "diretoria_de_marketing_internacional") {
+					modalTitle.style.color = "#FCD900";
+				}
+
+				let modalDepartment = document.getElementById("department");
+				modalDepartment.textContent = currentNodeData.department_name;
+
+				let modalContent = document.getElementById("body");
+				modalContent.textContent = currentNodeData.bio;
 				// document.getElementById('image').src = currentNodeData.img_url;
 
 				// Insere o source do vídeo
@@ -373,16 +388,48 @@ document.addEventListener("DOMContentLoaded", async function () {
 				// let phoneIconPath = "../imgs/phone.svg";
 				// let emailIconPath = "../imgs/mail.svg";
 
+
 				currentNodeData.phone &&
-					(document.getElementById(
-						"phone",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/phone.png" class="icone-telefone" /> ${currentNodeData.phone}</div>`);
+				(document.getElementById(
+					"phone",
+				).innerHTML = `<div id="phone-icon" style="display: flex; gap: 10px; font-weight: 300;"><svg class="icone-telefone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+				<path fill="currentColor" d="M21,15.46l-5.27-2.11a.61.61,0,0,0-.74.18L13.2,16.29a13.14,13.14,0,0,1-4.63-4.63l2.76-2.76a.61.61,0,0,0,.18-.74L8.54,3a.6.6,0,0,0-.65-.39L3,2.89A.6.6,0,0,0,2.43,3.6,18.52,18.52,0,0,0,21.4,22.57a.6.6,0,0,0,.71-.57l.28-4.88A.61.61,0,0,0,21,15.46Z"/>
+				</svg> ${currentNodeData.phone}</div>`);
 
 				currentNodeData.email &&
 					(document.getElementById(
 						"email",
-					).innerHTML = `<div style="display: flex; gap: 10px; font-weight: 300;"><img src="https://embratur.1md.com.br/wp-content/uploads/2024/04/mail.png" class="icone-telefone" /> ${currentNodeData.email}</div>`);
+					).innerHTML = `<div id="email-icon" style="display: flex; gap: 10px; font-weight: 300;"><svg class="icone-telefone" class="feather feather-mail" fill="none" height="24" stroke="#FFFFFF"
+					stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+					<polyline points="22,6 12,13 2,6" />
+				</svg> ${currentNodeData.email}</div>`);
 			}
+
+				if (currentNodeData.phone && currentNodeData.composition === "presidencia") {
+					document.querySelector('#phone-icon svg path').style.fill = '#0165B1';
+				}
+
+				if (currentNodeData.phone && currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+					document.querySelector('#phone-icon svg path').style.fill = '#107b49';
+				}
+
+				if (currentNodeData.phone && currentNodeData.composition === "diretoria_de_marketing_internacional") {
+					document.querySelector('#phone-icon svg path').style.fill = '#FCD900';
+				}
+
+				if (currentNodeData.email && currentNodeData.composition === "presidencia") {
+					document.querySelector('#email-icon svg path').style.fill = '#0165B1';
+				}
+
+				if (currentNodeData.email && currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+					document.querySelector('#email-icon svg path').style.fill = '#107b49';
+				}
+
+				if (currentNodeData.email && currentNodeData.composition === "diretoria_de_marketing_internacional") {
+					document.querySelector('#email-icon svg path').style.fill = '#FCD900';
+				}
 		}
 
 		// Obtém o modal
