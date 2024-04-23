@@ -489,6 +489,24 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (currentNodeData.email && currentNodeData.composition === "diretoria_de_marketing_internacional") {
         document.querySelector('#email-icon svg path').style.fill = '#FCD900';
       }
+      let playButton = document.querySelector("#play-button");
+      let pauseButton = document.querySelector("#pause-button");
+      let progressBar = document.querySelector("#progress-bar");
+      if (currentNodeData.composition === "presidencia") {
+        playButton.style.backgroundColor = '#0165B1';
+        pauseButton.style.backgroundColor = '#0165B1';
+        progressBar.style.backgroundColor = '#0165B1';
+      }
+      if (currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+        playButton.style.backgroundColor = '#107b49';
+        pauseButton.style.backgroundColor = '#107b49';
+        progressBar.style.backgroundColor = '#107b49';
+      }
+      if (currentNodeData.composition === "diretoria_de_marketing_internacional") {
+        playButton.style.backgroundColor = '#FCD900';
+        pauseButton.style.backgroundColor = '#FCD900';
+        progressBar.style.backgroundColor = '#FCD900';
+      }
     }
 
     // Obtém o modal
