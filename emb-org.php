@@ -102,6 +102,56 @@ function get_organograma_data()
 	return rest_ensure_response($membros);
 }
 
+// Id autoincremento ACF
+function acf_set_auto_increment_member_id($post_id) {
+	// Certifique-se de que estamos tratando de um novo post do tipo 'membros_do_organograma'
+	if (get_post_type($post_id) == 'organograma_member' && get_post_status($post_id) == 'auto-draft') {
+			$field_key = "field_6617e9217afba"; // Substitua pelo key real do seu campo ACF
+			$last_id = get_option('acf_last_id', 0); // Pega o último ID usado
+			$new_id = $last_id + 1; // Incrementa o ID
+
+			// Atualiza o campo ACF com o novo ID
+			update_field($field_key, $new_id, $post_id);
+
+			// Atualiza o último ID usado
+			update_option('acf_last_id', $new_id);
+	}
+}
+
+// Adiciona a função ao hook 'save_post' com prioridade alta para garantir que execute depois da criação do post
+add_action('save_post', 'acf_set_auto_increment_member_id', 20, 1);
+
+// Popula o select PARENTID
+function load_parent_id_choices($field) {
+	// Reset choices
+	$field['choices'] = array();
+
+	// Define custom post type
+	$args = array(
+			'post_type' => 'organograma_member',
+			'posts_per_page' => -1  // Ajuste conforme necessário para limitar resultados
+	);
+
+	// Get custom post type items
+	$posts = get_posts($args);
+
+	// Loop through them to create a dynamic dropdown
+	foreach ($posts as $post) {
+			$post_id = get_field('id', $post->ID);  // Assumindo que 'id' é o campo autoincrementado
+			$post_name = get_the_title($post->ID);  // Pega o título/nome do post para mostrar no select
+
+			// Make the title the label and the autoincrement ID the value
+			$field['choices'][$post_id] = $post_name;
+	}
+
+	return $field;
+}
+
+add_filter('acf/load_field/key=field_6617e9557afbb', 'load_parent_id_choices');
+
+
+
+
 function render_organograma_block() {
 	return '<div id="organograma-container"></div>';
 }
@@ -113,6 +163,7 @@ function render_organograma_block() {
 function emb_org_enqueue_styles() {
 	wp_enqueue_style('modal-css', plugin_dir_url(__FILE__) . './src/css/modal.css');
 	wp_enqueue_style('video-css', plugin_dir_url(__FILE__) . './src/css/video.css');
+	wp_enqueue_style('style-css', plugin_dir_url(__FILE__) . './src/css/style.css');
 }
 
 add_action('wp_enqueue_scripts', 'emb_org_enqueue_styles');

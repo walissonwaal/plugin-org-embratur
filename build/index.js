@@ -184,19 +184,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log("TESTE");
     let chart = new d3.OrgChart().compact(false);
     chart.layoutBindings().top.linkY = n => n.y - 24;
-    chart.container(container).svgHeight(window.innerHeight).data(data && data).nodeHeight(d => 200).nodeWidth(d => {
+    chart.container(container).svgHeight(window.innerHeight).data(data && data).rootMargin(120).nodeHeight(d => 200).nodeWidth(d => {
       return 300;
     })
     // .nodeUpdate(function (d) {
     // 	d3.select(this)
-    // 		.select('.node')
-    // 		.on('click.node', (e, d) => {
+    // 		.select(".node")
+    // 		.on("click.node", (e, d) => {
     // 			chart.onButtonClick(e, d);
     // 		});
 
-    // 	d3.select(this).select('.node-button-foreign-object').remove();
+    // 	d3.select(this).select(".node-button-foreign-object").remove();
     // })
-    // .setActiveNodeCentered(false)
+    // .setActiveNodeCentered(true)
     .childrenMargin(d => 100).compactMarginBetween(d => 100).compactMarginPair(d => 100).neightbourMargin((a, b) => 25).siblingsMargin(d => 25)
     // Captura o click no nó
     .onNodeClick(d => {
@@ -312,13 +312,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             .action-buttons {
-              position: absolute;
-              top: 10px;
-              right: 35px;
+              // position: absolute;
+              // top: 10px;
+              // right: 35px;
+							display: flex;
+							gap: 0.5rem;
             }
 
             .svg-chart-container {
-              background-color: #fff;
+              background-color: #f1f1f1;
             }
 
             .svg-chart-container:before {
@@ -461,10 +463,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         // let phoneIconPath = "../imgs/phone.svg";
         // let emailIconPath = "../imgs/mail.svg";
 
-        currentNodeData.phone && (document.getElementById("phone").innerHTML = `<div id="phone-icon" style="display: flex; gap: 10px; font-weight: 300;"><svg class="icone-telefone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        currentNodeData.phone && (document.getElementById("phone").innerHTML = `<div id="phone-icon" style="display: flex; gap: 10px; font-weight: 300; align-items: center;"><svg class="icone-telefone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 				<path fill="currentColor" d="M21,15.46l-5.27-2.11a.61.61,0,0,0-.74.18L13.2,16.29a13.14,13.14,0,0,1-4.63-4.63l2.76-2.76a.61.61,0,0,0,.18-.74L8.54,3a.6.6,0,0,0-.65-.39L3,2.89A.6.6,0,0,0,2.43,3.6,18.52,18.52,0,0,0,21.4,22.57a.6.6,0,0,0,.71-.57l.28-4.88A.61.61,0,0,0,21,15.46Z"/>
 				</svg> ${currentNodeData.phone}</div>`);
-        currentNodeData.email && (document.getElementById("email").innerHTML = `<div id="email-icon" style="display: flex; gap: 10px; font-weight: 300;"><svg class="icone-telefone" class="feather feather-mail" fill="none" height="24" stroke="#FFFFFF"
+        currentNodeData.email && (document.getElementById("email").innerHTML = `<div id="email-icon" style="display: flex; gap: 10px; font-weight: 300; align-items: center;"><svg class="icone-telefone" class="feather feather-mail" fill="none" height="24" stroke="#FFFFFF"
 					stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
 					xmlns="http://www.w3.org/2000/svg">
 					<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -472,40 +474,40 @@ document.addEventListener("DOMContentLoaded", async function () {
 				</svg> ${currentNodeData.email}</div>`);
       }
       if (currentNodeData.phone && currentNodeData.composition === "presidencia") {
-        document.querySelector('#phone-icon svg path').style.fill = '#0165B1';
+        document.querySelector("#phone-icon svg path").style.fill = "#0165B1";
       }
       if (currentNodeData.phone && currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
-        document.querySelector('#phone-icon svg path').style.fill = '#107b49';
+        document.querySelector("#phone-icon svg path").style.fill = "#107b49";
       }
       if (currentNodeData.phone && currentNodeData.composition === "diretoria_de_marketing_internacional") {
-        document.querySelector('#phone-icon svg path').style.fill = '#FCD900';
+        document.querySelector("#phone-icon svg path").style.fill = "#FCD900";
       }
       if (currentNodeData.email && currentNodeData.composition === "presidencia") {
-        document.querySelector('#email-icon svg path').style.fill = '#0165B1';
+        document.querySelector("#email-icon svg path").style.fill = "#0165B1";
       }
       if (currentNodeData.email && currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
-        document.querySelector('#email-icon svg path').style.fill = '#107b49';
+        document.querySelector("#email-icon svg path").style.fill = "#107b49";
       }
       if (currentNodeData.email && currentNodeData.composition === "diretoria_de_marketing_internacional") {
-        document.querySelector('#email-icon svg path').style.fill = '#FCD900';
+        document.querySelector("#email-icon svg path").style.fill = "#FCD900";
       }
       let playButton = document.querySelector("#play-button");
       let pauseButton = document.querySelector("#pause-button");
       let progressBar = document.querySelector("#progress-bar");
       if (currentNodeData.composition === "presidencia") {
-        playButton.style.backgroundColor = '#0165B1';
-        pauseButton.style.backgroundColor = '#0165B1';
-        progressBar.style.backgroundColor = '#0165B1';
+        playButton.style.backgroundColor = "#0165B1";
+        pauseButton.style.backgroundColor = "#0165B1";
+        progressBar.style.backgroundColor = "#0165B1";
       }
       if (currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
-        playButton.style.backgroundColor = '#107b49';
-        pauseButton.style.backgroundColor = '#107b49';
-        progressBar.style.backgroundColor = '#107b49';
+        playButton.style.backgroundColor = "#107b49";
+        pauseButton.style.backgroundColor = "#107b49";
+        progressBar.style.backgroundColor = "#107b49";
       }
       if (currentNodeData.composition === "diretoria_de_marketing_internacional") {
-        playButton.style.backgroundColor = '#FCD900';
-        pauseButton.style.backgroundColor = '#FCD900';
-        progressBar.style.backgroundColor = '#FCD900';
+        playButton.style.backgroundColor = "#FCD900";
+        pauseButton.style.backgroundColor = "#FCD900";
+        progressBar.style.backgroundColor = "#FCD900";
       }
     }
 
@@ -527,6 +529,44 @@ document.addEventListener("DOMContentLoaded", async function () {
         // modal.style.display = "none";
       }
     };
+    const actionButtons = `
+    <button onclick="chart.fit()" class="btn btn-action-button waves-effect waves-light">
+      <i class="fas fa-sync"></i> Centralizar
+    </button>
+    <br />
+    <button onclick="chart.exportImg()" class="btn btn-action-button waves-effect waves-light">
+      <i class="far fa-images"></i> Exportar PNG
+    </button>
+    <br />
+
+    <button onclick="chart.exportImg({full:true})" class="btn btn-action-button waves-effect waves-light">
+      <i class="far fa-images"></i> Exportar Full PNG
+    </button>
+    <br />
+
+    <button onclick="chart.exportSvg()" class="btn btn-action-button waves-effect waves-light">
+      <i class="fas fa-file-download"></i> Exportar SVG
+    </button>
+    <br />
+    <button onclick="chart.expandAll()" class="btn btn-action-button waves-effect waves-light">
+      <i class="fas fa-angle-double-down"></i> Expandir tudo</button><br />
+
+    <button onclick="chart.collapseAll()" class="btn btn-action-button waves-effect waves-light">
+      <i class="fas fa-angle-double-up"></i> Recolher tudo</button><br />
+
+    <button onclick="chart.zoomOut()" class="btn btn-action-button waves-effect waves-light">
+      <i class="fas fa-minus"></i> Zoom OUT</button><br />
+    <button onclick="chart.zoomIn()" class="btn btn-action-button waves-effect waves-light">
+      <i class="fas fa-plus"></i> Zoom IN
+    </button>
+    <br />
+		`;
+
+    // const actionButtonsElement = document.createElement("div");
+    // actionButtonsElement.classList.add("action-buttons");
+    // actionButtonsElement.innerHTML = actionButtons;
+    // body.appendChild(actionButtonsElement);
+    // console.log("actionButtonsElement criado");
   }
   document.dispatchEvent(new CustomEvent("OrganogramaReady"));
 });
