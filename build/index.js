@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       return `<div style="position: relative; color:#565656;border-radius:3px;padding:6px;font-size:10px;margin:auto auto;background-color:#D9D9D9;border: 1px solid #E4E2E9"> <span style="font-size:9px">${node.children ? `<i class="fas fa-angle-up"></i>` : `<i class="fas fa-angle-down"></i>`}</span></div>`;
       // return `<div style="position: relative;bottom: 20px;color:#4B4B4B;border-radius:3px;width:20px; height: 20px; display: flex; justify-content: center; align-items: center;font-size:16px;margin:auto auto;background-color:#D9D9D9;border: 1px solid #E4E2E9"> <span style="font-size:9px"></span> ${node.data._directSubordinates}</div>`;
     }).linkUpdate(function (d, i, arr) {
-      d3.select(this).attr("stroke", d => d.data._upToTheRootHighlighted ? "#152785" : "#E4E2E9").attr("stroke-width", d => d.data._upToTheRootHighlighted ? 5 : 1);
+      d3.select(this).attr("stroke", d => d.data._upToTheRootHighlighted ? "#4B4B4B" : "#4B4B4B").attr("stroke-width", d => d.data._upToTheRootHighlighted ? 5 : 1);
       if (d.data._upToTheRootHighlighted) {
         d3.select(this).raise();
       }
@@ -336,6 +336,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           </style>
   `;
     }).render();
+    chart.collapseAll();
     console.log("Organograma criado com sucesso.");
 
     // Funções relacionadas ao modal

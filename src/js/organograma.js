@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			.linkUpdate(function (d, i, arr) {
 				d3.select(this)
 					.attr("stroke", (d) =>
-						d.data._upToTheRootHighlighted ? "#152785" : "#E4E2E9",
+						d.data._upToTheRootHighlighted ? "#4B4B4B" : "#4B4B4B",
 					)
 					.attr("stroke-width", (d) =>
 						d.data._upToTheRootHighlighted ? 5 : 1,
@@ -227,13 +227,13 @@ document.addEventListener("DOMContentLoaded", async function () {
               background-color: #0165B1 !important;
             }
 
-            .action-buttons {
-              // position: absolute;
-              // top: 10px;
-              // right: 35px;
-							display: flex;
-							gap: 0.5rem;
-            }
+            // .action-buttons {
+            //   position: absolute;
+            //   top: 10px;
+            //   right: 35px;
+						// 	display: flex;
+						// 	gap: 0.5rem;
+            // }
 
             .svg-chart-container {
               background-color: #f1f1f1;
@@ -253,6 +253,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   `;
 			})
 			.render();
+
+		chart.zoomOut();
 		console.log("Organograma criado com sucesso.");
 
 		// Funções relacionadas ao modal
@@ -305,6 +307,55 @@ document.addEventListener("DOMContentLoaded", async function () {
 			playButton.style.display = "block";
 			pauseButton.style.display = "none";
 		}
+
+		// const buttons = `
+    // <button class="btn btn-action-button waves-effect waves-light" id="chartCenter">Centralizar</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="expandAll">Expandir Todos</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="collapseAll">Colapsar Todos</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="zoomIn">Aumentar zoom</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="zoomOut">Diminuir zoom</button>
+		// `;
+		// const buttonsContainer = document.createElement("div");
+		// buttonsContainer.id = "org-chart-controls";
+		// buttonsContainer.innerHTML = buttons;
+		// body.appendChild(buttonsContainer);
+
+		// function zoomIn() {
+		// 	chart.zoomIn();
+		// }
+		// function zoomOut() {
+		// 	chart.zoomOut();
+		// }
+		// function chartCenter() {
+		// 	chart.fit();
+		// }
+
+		// function expandAll() {
+		// 	chart.expandAll();
+		// }
+
+		// function collapseAll() {
+		// 	chart.collapseAll();
+		// }
+
+		// document.getElementById("zoomIn").addEventListener("click", function () {
+		// 	zoomIn();
+		// });
+		// document.getElementById("zoomOut").addEventListener("click", function () {
+		// 	zoomOut();
+		// });
+		// document.getElementById("chartCenter").addEventListener("click", function () {
+		// 	chartCenter();
+		// });
+		// document.getElementById("expandAll").addEventListener("click", function () {
+		// 	expandAll();
+		// });
+
+		// document
+		// 	.getElementById("collapseAll")
+		// 	.addEventListener("click", function () {
+		// 		collapseAll();
+		// 	});
 
 		const modalHtml = `
 		<div id="video-container" class="video-container">
@@ -529,7 +580,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     </button>
     <br />
 		`;
-
 
 		// const actionButtonsElement = document.createElement("div");
 		// actionButtonsElement.classList.add("action-buttons");
