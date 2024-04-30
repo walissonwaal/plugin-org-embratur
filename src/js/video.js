@@ -72,6 +72,7 @@ document.addEventListener("OrganogramaReady", function () {
 	});
 
 	function togglePlayPause() {
+		console.log("CLICOU NO PLAY")
 		var videoContainer = document.getElementById("video-container");
 		var video = document.getElementById("video");
 		let modal = document.getElementById("modal");

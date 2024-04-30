@@ -311,13 +311,13 @@ document.addEventListener("DOMContentLoaded", async function () {
               background-color: #0165B1 !important;
             }
 
-            .action-buttons {
-              // position: absolute;
-              // top: 10px;
-              // right: 35px;
-							display: flex;
-							gap: 0.5rem;
-            }
+            // .action-buttons {
+            //   position: absolute;
+            //   top: 10px;
+            //   right: 35px;
+						// 	display: flex;
+						// 	gap: 0.5rem;
+            // }
 
             .svg-chart-container {
               background-color: #f1f1f1;
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           </style>
   `;
     }).render();
-    chart.collapseAll();
+    chart.zoomOut();
     console.log("Organograma criado com sucesso.");
 
     // Funções relacionadas ao modal
@@ -356,7 +356,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       const nodeData = getNodeDataById(nodeId);
       if (nodeData) {
         currentNodeData = nodeData;
-        modalUpdate();
+        if (currentNodeData.movie_url === false) {
+          modalUpdateLessVideo();
+        } else {
+          modalUpdateWithVideo();
+        }
       }
     }
 
@@ -386,7 +390,57 @@ document.addEventListener("DOMContentLoaded", async function () {
       playButton.style.display = "block";
       pauseButton.style.display = "none";
     }
-    const modalHtml = `
+
+    // const buttons = `
+    // <button class="btn btn-action-button waves-effect waves-light" id="chartCenter">Centralizar</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="expandAll">Expandir Todos</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="collapseAll">Colapsar Todos</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="zoomIn">Aumentar zoom</button>
+    // <button class="btn btn-action-button waves-effect waves-light" id="zoomOut">Diminuir zoom</button>
+    // `;
+    // const buttonsContainer = document.createElement("div");
+    // buttonsContainer.id = "org-chart-controls";
+    // buttonsContainer.innerHTML = buttons;
+    // body.appendChild(buttonsContainer);
+
+    // function zoomIn() {
+    // 	chart.zoomIn();
+    // }
+    // function zoomOut() {
+    // 	chart.zoomOut();
+    // }
+    // function chartCenter() {
+    // 	chart.fit();
+    // }
+
+    // function expandAll() {
+    // 	chart.expandAll();
+    // }
+
+    // function collapseAll() {
+    // 	chart.collapseAll();
+    // }
+
+    // document.getElementById("zoomIn").addEventListener("click", function () {
+    // 	zoomIn();
+    // });
+    // document.getElementById("zoomOut").addEventListener("click", function () {
+    // 	zoomOut();
+    // });
+    // document.getElementById("chartCenter").addEventListener("click", function () {
+    // 	chartCenter();
+    // });
+    // document.getElementById("expandAll").addEventListener("click", function () {
+    // 	expandAll();
+    // });
+
+    // document
+    // 	.getElementById("collapseAll")
+    // 	.addEventListener("click", function () {
+    // 		collapseAll();
+    // 	});
+
+    const modalWithVideo = `
 		<div id="video-container" class="video-container">
         <video class="video-dimmed video" id="video" height="240" preload="metadata">
           <source id="movie" src="" type="video/mp4">
@@ -412,6 +466,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           <span id="email"></span>
         </div>
       </div>
+
 		`;
     const modalBackgroundElement = document.createElement("div");
     modalBackgroundElement.id = "modalBackground";
@@ -421,7 +476,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const modalElement = document.createElement("div");
     modalElement.id = "modal";
     modalElement.classList = "modal";
-    modalElement.innerHTML = modalHtml;
+    modalElement.innerHTML = modalWithVideo;
     modalBackgroundElement.appendChild(modalElement);
     console.log("Modal criado");
 
@@ -432,10 +487,125 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Adiciona event listener ao botão de fechar video
     const closeButtonVideo = modalElement.querySelector(".close-video");
     closeButtonVideo.addEventListener("click", handleCloseVideo);
-
-    // Atualiza o modal
-    function modalUpdate() {
+    const videoElementHtml = `
+			<video class="video-dimmed video" id="video" height="240" preload="metadata">
+          <source id="movie" src="" type="video/mp4">
+        </video>
+        <div id="play-button" class="play-button">&#9658;</div>
+        <div id="pause-button" class="pause-button" style="display: none;">&#10074;&#10074;</div>
+        <div id="progress-container" class="progress-container">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+				<span class="close-video">&times;</span>
+		`;
+    // Atualiza o modal com vídeo
+    function modalUpdateWithVideo() {
+      let playButton = document.getElementById("play-button");
+      let pauseButton = document.getElementById("pause-button");
+      let closeVideo = document.querySelector(".close-video");
+      let video = document.getElementById("video");
+      let progressBar = document.querySelector("#progress-bar");
+      let progressContainer = document.getElementById("progress-container");
       if (currentNodeData) {
+        if (!video && !playButton && !pauseButton && !closeVideo) {
+          let videoContainer = document.getElementById("video-container");
+          videoContainer.innerHTML = videoElementHtml;
+        }
+        if (playButton && pauseButton) {
+          playButton.addEventListener("click", togglePlayPause);
+          pauseButton.addEventListener("click", togglePlayPause);
+        }
+        if (video) {
+          video.addEventListener("timeupdate", updateProgressBar);
+        }
+        progressContainer.addEventListener("click", seekVideo);
+        function updateProgressBar() {
+          let percentage = video.currentTime / video.duration * 100;
+          progressBar.style.width = percentage + "%";
+        }
+        function seekVideo(e) {
+          let progressTime = e.offsetX / progressContainer.offsetWidth * video.duration;
+          video.currentTime = progressTime;
+        }
+        video.addEventListener("click", togglePlayPause);
+        video.addEventListener("mousemove", function () {
+          if (!video.paused) {
+            pauseButton.style.display = "block";
+            autoHidePauseButton();
+          }
+        });
+        video.addEventListener("mouseleave", function () {
+          if (!video.paused) {
+            pauseButton.style.display = "none";
+          }
+        });
+        video.addEventListener("ended", function () {
+          let videoContainer = document.getElementById("video-container");
+          let content = document.getElementById("content");
+          let modal = document.getElementById("modal");
+          let closeVideo = document.querySelector(".close-video");
+          videoContainer.classList.add("video-container");
+          video.style.objectFit = "cover";
+          video.style.backgroundColor = "";
+          video.style.borderTopLeftRadius = "25px";
+          video.style.borderBottomLeftRadius = "25px";
+          closeVideo.style.display = "none";
+          video.style.position = "";
+          video.currentTime = 0;
+          video.pause();
+          video.classList.add("video-dimmed");
+          progressContainer.style.display = "none";
+          playButton.style.display = "block";
+          pauseButton.style.display = "none";
+        });
+        pauseButton.addEventListener("mouseenter", function () {
+          clearTimeout(pauseTimeout);
+        });
+        pauseButton.addEventListener("mouseleave", function () {
+          if (!video.paused) {
+            autoHidePauseButton();
+          }
+        });
+        function togglePlayPause() {
+          console.log("CLICOU NO PLAY");
+          var videoContainer = document.getElementById("video-container");
+          var video = document.getElementById("video");
+          let modal = document.getElementById("modal");
+          let closeVideo = document.querySelector(".close-video");
+          if (video.paused) {
+            modal.style.borderRadius = "25px";
+            modal.style.overflow = "hidden";
+            videoContainer.classList.remove("video-container");
+            video.style.width = "100%";
+            video.style.position = "absolute";
+            video.style.objectFit = "contain";
+            video.play();
+            video.classList.remove("video-dimmed");
+            closeVideo.style.display = "flex";
+            closeVideo.style.position = "absolute";
+            closeVideo.style.zIndex = "99999";
+            closeVideo.style.top = "1.3rem";
+            closeVideo.style.right = "2rem";
+            playButton.style.display = "none";
+            pauseButton.style.display = "block";
+            progressContainer.style.display = "block";
+            autoHidePauseButton();
+          } else {
+            video.pause();
+            video.classList.add("video-dimmed");
+            playButton.style.display = "block";
+            pauseButton.style.display = "none";
+            clearTimeout(pauseTimeout);
+          }
+        }
+        function autoHidePauseButton() {
+          clearTimeout(pauseTimeout);
+          pauseTimeout = setTimeout(function () {
+            if (!video.paused) {
+              pauseButton.style.display = "none";
+            }
+          }, 3000);
+        }
         let modalTitle = document.getElementById("title");
         modalTitle.textContent = currentNodeData.first_name;
         if (currentNodeData.composition === "presidencia") {
@@ -457,7 +627,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         var source = document.getElementById("movie");
         source.src = currentNodeData.movie_url;
         // Carrega vídeo
-        var video = document.getElementById("video");
         video.load();
 
         // icones do modal
@@ -492,9 +661,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (currentNodeData.email && currentNodeData.composition === "diretoria_de_marketing_internacional") {
         document.querySelector("#email-icon svg path").style.fill = "#FCD900";
       }
-      let playButton = document.querySelector("#play-button");
-      let pauseButton = document.querySelector("#pause-button");
-      let progressBar = document.querySelector("#progress-bar");
       if (currentNodeData.composition === "presidencia") {
         playButton.style.backgroundColor = "#0165B1";
         pauseButton.style.backgroundColor = "#0165B1";
@@ -511,13 +677,81 @@ document.addEventListener("DOMContentLoaded", async function () {
         progressBar.style.backgroundColor = "#FCD900";
       }
     }
+    function modalUpdateLessVideo() {
+      if (currentNodeData) {
+        let modalTitle = document.getElementById("title");
+        modalTitle.textContent = currentNodeData.first_name;
+        if (currentNodeData.composition === "presidencia") {
+          modalTitle.style.color = "#0165B1";
+        }
+        if (currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+          modalTitle.style.color = "#107b49";
+        }
+        if (currentNodeData.composition === "diretoria_de_marketing_internacional") {
+          modalTitle.style.color = "#FCD900";
+        }
+        let modalDepartment = document.getElementById("department");
+        modalDepartment.textContent = currentNodeData.department_name;
+        let modalContent = document.getElementById("body");
+        modalContent.textContent = currentNodeData.bio;
+        // document.getElementById('image').src = currentNodeData.img_url;
+
+        // Remover tag de vídeo e adicionar tag de imagem
+        let videoContainer = document.getElementById("video-container");
+        let video = document.getElementById("video");
+        let play = document.getElementById("play-button");
+        let pause = document.getElementById("pause-button");
+        let closeVideo = document.querySelector(".close-video");
+        if (video && videoContainer && play && pause && closeVideo) {
+          videoContainer.removeChild(video);
+          videoContainer.removeChild(play);
+          videoContainer.removeChild(pause);
+          videoContainer.removeChild(closeVideo);
+        } else {
+          console.log("Elemento 'video' ou 'video-container' não encontrado.");
+        }
+        currentNodeData.phone && (document.getElementById("phone").innerHTML = `<div id="phone-icon" style="display: flex; gap: 10px; font-weight: 300; align-items: center;"><svg class="icone-telefone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+				<path fill="currentColor" d="M21,15.46l-5.27-2.11a.61.61,0,0,0-.74.18L13.2,16.29a13.14,13.14,0,0,1-4.63-4.63l2.76-2.76a.61.61,0,0,0,.18-.74L8.54,3a.6.6,0,0,0-.65-.39L3,2.89A.6.6,0,0,0,2.43,3.6,18.52,18.52,0,0,0,21.4,22.57a.6.6,0,0,0,.71-.57l.28-4.88A.61.61,0,0,0,21,15.46Z"/>
+				</svg> ${currentNodeData.phone}</div>`);
+        currentNodeData.email && (document.getElementById("email").innerHTML = `<div id="email-icon" style="display: flex; gap: 10px; font-weight: 300; align-items: center;"><svg class="icone-telefone" class="feather feather-mail" fill="none" height="24" stroke="#FFFFFF"
+					stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+					<polyline points="22,6 12,13 2,6" />
+				</svg> ${currentNodeData.email}</div>`);
+      }
+      if (currentNodeData.phone && currentNodeData.composition === "presidencia") {
+        document.querySelector("#phone-icon svg path").style.fill = "#0165B1";
+      }
+      if (currentNodeData.phone && currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+        document.querySelector("#phone-icon svg path").style.fill = "#107b49";
+      }
+      if (currentNodeData.phone && currentNodeData.composition === "diretoria_de_marketing_internacional") {
+        document.querySelector("#phone-icon svg path").style.fill = "#FCD900";
+      }
+      if (currentNodeData.email && currentNodeData.composition === "presidencia") {
+        document.querySelector("#email-icon svg path").style.fill = "#0165B1";
+      }
+      if (currentNodeData.email && currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+        document.querySelector("#email-icon svg path").style.fill = "#107b49";
+      }
+      if (currentNodeData.email && currentNodeData.composition === "diretoria_de_marketing_internacional") {
+        document.querySelector("#email-icon svg path").style.fill = "#FCD900";
+      }
+    }
 
     // Obtém o modal
     let modal = document.getElementById("modal");
 
     // Abre o modal
     function handleOpenModal() {
-      modalUpdate();
+      if (currentNodeData.movie_url === false) {
+        console.log("Movie URL: ", currentNodeData.movie_url);
+        modalUpdateLessVideo();
+      }
+      if (currentNodeData.movie_url !== false) {
+        modalUpdateWithVideo();
+      }
       // display inicial do modal aberto e do background
       modalBackgroundElement.style.display = "flex";
       // modal.style.display = "grid";
@@ -639,6 +873,7 @@ document.addEventListener("OrganogramaReady", function () {
     }
   });
   function togglePlayPause() {
+    console.log("CLICOU NO PLAY");
     var videoContainer = document.getElementById("video-container");
     var video = document.getElementById("video");
     let modal = document.getElementById("modal");
