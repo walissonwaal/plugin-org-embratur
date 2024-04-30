@@ -5,18 +5,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const cdnImportD3 = document.createElement("script");
 	cdnImportD3.src = "https://d3js.org/d3.v7.min.js";
 	cdnImportD3.onload = function () {
-		console.log("D3 carregado");
 
 		const cdnImportD3OrgChart = document.createElement("script");
 		cdnImportD3OrgChart.src = "https://cdn.jsdelivr.net/npm/d3-org-chart@2.6.0";
 		cdnImportD3OrgChart.onload = function () {
-			console.log("D3 Org Chart carregado");
 
 			const cdnImportD3Flextree = document.createElement("script");
 			cdnImportD3Flextree.src =
 				"https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js";
 			cdnImportD3Flextree.onload = function () {
-				console.log("D3 Flextree carregado");
 			};
 			body.appendChild(cdnImportD3Flextree);
 		};
@@ -34,8 +31,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const container = document.getElementById("organograma-container");
 
 	if (container) {
-		console.log("Container obtido.");
-		console.log("Obtendo dados da API...");
 		await fetch("/wp-json/emb-org/v1/membros/")
 			.then((response) => response.json())
 			.then((data) => {
@@ -45,7 +40,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 					d._radius = Math.round(radiusScale(d.value) * 10) / 10;
 				});
 				// cdnImportD3OrgChart.onload = function () {
-				console.log("Dados recebidos:", data);
 				createOrganizationChart(container, data);
 				// };
 			})
@@ -54,12 +48,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	function createOrganizationChart(container, data) {
 		if (!data || !data.length) {
-			console.log("Nenhum membro encontrado.");
 			container.innerHTML = "<p>Nenhum membro encontrado.</p>";
 			return;
 		}
-
-		console.log("Iniciando a criação do organograma com dados:", data);
 
 		let chart = new d3.OrgChart().compact(false);
 
@@ -253,7 +244,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 			.render();
 
 		chart.zoomOut();
-		console.log("Organograma criado com sucesso.");
 
 		// Funções relacionadas ao modal
 
@@ -392,14 +382,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 		modalBackgroundElement.id = "modalBackground";
 		modalBackgroundElement.style.display = "none";
 		body.appendChild(modalBackgroundElement);
-		console.log("Modalbackground criado");
 
 		const modalElement = document.createElement("div");
 		modalElement.id = "modal";
 		modalElement.classList = "modal";
 		modalElement.innerHTML = modalWithVideo;
 		modalBackgroundElement.appendChild(modalElement);
-		console.log("Modal criado");
 
 		// Adiciona event listener ao botão de fechar modal
 		const closeButtonModal = modalElement.querySelector(".close");
@@ -511,7 +499,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 				}
 
 				function togglePlayPause() {
-					console.log("CLICOU NO PLAY");
 					var videoContainer = document.getElementById("video-container");
 					var video = document.getElementById("video");
 					let modal = document.getElementById("modal");
@@ -735,8 +722,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 					videoContainer.removeChild(play);
 					videoContainer.removeChild(pause);
 					videoContainer.removeChild(closeVideo);
-				} else {
-					console.log("Elemento 'video' ou 'video-container' não encontrado.");
 				}
 
 				currentNodeData.phone &&
@@ -803,7 +788,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 		// Abre o modal
 		function handleOpenModal() {
 			if (currentNodeData.movie_url === false) {
-				console.log("Movie URL: ", currentNodeData.movie_url);
 				modalUpdateLessVideo();
 			}
 			if (currentNodeData.movie_url !== false) {
