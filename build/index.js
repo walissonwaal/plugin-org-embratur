@@ -133,19 +133,20 @@ __webpack_require__.r(__webpack_exports__);
 document.addEventListener("DOMContentLoaded", async function () {
   // importação dos cdn scripts e css
   const body = document.body;
-  const head = document.head;
   const cdnImportD3 = document.createElement("script");
   cdnImportD3.src = "https://d3js.org/d3.v7.min.js";
   cdnImportD3.onload = function () {
-    console.log("D3 carregado");
+    // console.log("D3 carregado");
+
     const cdnImportD3OrgChart = document.createElement("script");
     cdnImportD3OrgChart.src = "https://cdn.jsdelivr.net/npm/d3-org-chart@2.6.0";
     cdnImportD3OrgChart.onload = function () {
-      console.log("D3 Org Chart carregado");
+      // console.log("D3 Org Chart carregado");
+
       const cdnImportD3Flextree = document.createElement("script");
       cdnImportD3Flextree.src = "https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js";
       cdnImportD3Flextree.onload = function () {
-        console.log("D3 Flextree carregado");
+        // console.log("D3 Flextree carregado");
       };
       body.appendChild(cdnImportD3Flextree);
     };
@@ -160,8 +161,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   body.appendChild(cdnImportD3FontAwesome);
   const container = document.getElementById("organograma-container");
   if (container) {
-    console.log("Container obtido.");
-    console.log("Obtendo dados da API...");
+    // console.log("Container obtido.");
+    // console.log("Obtendo dados da API...");
     await fetch("/wp-json/emb-org/v1/membros/").then(response => response.json()).then(data => {
       const [min, max] = d3.extent(data, d => d.value);
       const radiusScale = d3.scaleSqrt().domain([min, max]).range([10, 100]);
@@ -169,19 +170,20 @@ document.addEventListener("DOMContentLoaded", async function () {
         d._radius = Math.round(radiusScale(d.value) * 10) / 10;
       });
       // cdnImportD3OrgChart.onload = function () {
-      console.log("Dados recebidos:", data);
+      // console.log("Dados recebidos:", data);
       createOrganizationChart(container, data);
       // };
     }).catch(error => console.error("Erro ao buscar dados:", error));
   }
   function createOrganizationChart(container, data) {
     if (!data || !data.length) {
-      console.log("Nenhum membro encontrado.");
+      // console.log("Nenhum membro encontrado.");
       container.innerHTML = "<p>Nenhum membro encontrado.</p>";
       return;
     }
-    console.log("Iniciando a criação do organograma com dados:", data);
-    console.log("TESTE");
+
+    // console.log("Iniciando a criação do organograma com dados:", data);
+
     let chart = new d3.OrgChart().compact(false);
     chart.layoutBindings().top.linkY = n => n.y - 24;
     chart.container(container).svgHeight(window.innerHeight).data(data && data).rootMargin(120).nodeHeight(d => 200).nodeWidth(d => {
@@ -337,7 +339,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   `;
     }).render();
     chart.zoomOut();
-    console.log("Organograma criado com sucesso.");
+    // console.log("Organograma criado com sucesso.");
 
     // Funções relacionadas ao modal
 
@@ -472,21 +474,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     modalBackgroundElement.id = "modalBackground";
     modalBackgroundElement.style.display = "none";
     body.appendChild(modalBackgroundElement);
-    console.log("Modalbackground criado");
+    // console.log("Modalbackground criado");
+
     const modalElement = document.createElement("div");
     modalElement.id = "modal";
     modalElement.classList = "modal";
     modalElement.innerHTML = modalWithVideo;
     modalBackgroundElement.appendChild(modalElement);
-    console.log("Modal criado");
+    // console.log("Modal criado");
 
     // Adiciona event listener ao botão de fechar modal
     const closeButtonModal = modalElement.querySelector(".close");
     closeButtonModal.addEventListener("click", handleCloseModal);
-
-    // Adiciona event listener ao botão de fechar video
-    const closeButtonVideo = modalElement.querySelector(".close-video");
-    closeButtonVideo.addEventListener("click", handleCloseVideo);
     const videoElementHtml = `
 			<video class="video-dimmed video" id="video" height="240" preload="metadata">
           <source id="movie" src="" type="video/mp4">
@@ -506,6 +505,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       let video = document.getElementById("video");
       let progressBar = document.querySelector("#progress-bar");
       let progressContainer = document.getElementById("progress-container");
+      let pauseTimeout;
       if (currentNodeData) {
         if (!video && !playButton && !pauseButton && !closeVideo) {
           let videoContainer = document.getElementById("video-container");
@@ -527,47 +527,54 @@ document.addEventListener("DOMContentLoaded", async function () {
           let progressTime = e.offsetX / progressContainer.offsetWidth * video.duration;
           video.currentTime = progressTime;
         }
-        video.addEventListener("click", togglePlayPause);
-        video.addEventListener("mousemove", function () {
-          if (!video.paused) {
-            pauseButton.style.display = "block";
-            autoHidePauseButton();
-          }
-        });
-        video.addEventListener("mouseleave", function () {
-          if (!video.paused) {
+        if (video) {
+          // Adiciona event listener ao botão de fechar video
+          const closeButtonVideo = modalElement.querySelector(".close-video");
+          closeButtonVideo.addEventListener("click", handleCloseVideo);
+          video.addEventListener("click", togglePlayPause);
+          video.addEventListener("mousemove", function () {
+            if (!video.paused) {
+              pauseButton.style.display = "block";
+              autoHidePauseButton();
+            }
+          });
+          video.addEventListener("mouseleave", function () {
+            if (!video.paused) {
+              pauseButton.style.display = "none";
+            }
+          });
+          video.addEventListener("ended", function () {
+            let videoContainer = document.getElementById("video-container");
+            let content = document.getElementById("content");
+            let modal = document.getElementById("modal");
+            let closeVideo = document.querySelector(".close-video");
+            videoContainer.classList.add("video-container");
+            video.style.objectFit = "cover";
+            video.style.backgroundColor = "";
+            video.style.borderTopLeftRadius = "25px";
+            video.style.borderBottomLeftRadius = "25px";
+            closeVideo.style.display = "none";
+            video.style.position = "";
+            video.currentTime = 0;
+            video.pause();
+            video.classList.add("video-dimmed");
+            progressContainer.style.display = "none";
+            playButton.style.display = "block";
             pauseButton.style.display = "none";
-          }
-        });
-        video.addEventListener("ended", function () {
-          let videoContainer = document.getElementById("video-container");
-          let content = document.getElementById("content");
-          let modal = document.getElementById("modal");
-          let closeVideo = document.querySelector(".close-video");
-          videoContainer.classList.add("video-container");
-          video.style.objectFit = "cover";
-          video.style.backgroundColor = "";
-          video.style.borderTopLeftRadius = "25px";
-          video.style.borderBottomLeftRadius = "25px";
-          closeVideo.style.display = "none";
-          video.style.position = "";
-          video.currentTime = 0;
-          video.pause();
-          video.classList.add("video-dimmed");
-          progressContainer.style.display = "none";
-          playButton.style.display = "block";
-          pauseButton.style.display = "none";
-        });
-        pauseButton.addEventListener("mouseenter", function () {
-          clearTimeout(pauseTimeout);
-        });
-        pauseButton.addEventListener("mouseleave", function () {
-          if (!video.paused) {
-            autoHidePauseButton();
-          }
-        });
+          });
+        }
+        if (pauseButton) {
+          pauseButton.addEventListener("mouseenter", function () {
+            clearTimeout(pauseTimeout);
+          });
+          pauseButton.addEventListener("mouseleave", function () {
+            if (!video.paused) {
+              autoHidePauseButton();
+            }
+          });
+        }
         function togglePlayPause() {
-          console.log("CLICOU NO PLAY");
+          // console.log("CLICOU NO PLAY");
           var videoContainer = document.getElementById("video-container");
           var video = document.getElementById("video");
           let modal = document.getElementById("modal");
@@ -627,7 +634,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         var source = document.getElementById("movie");
         source.src = currentNodeData.movie_url;
         // Carrega vídeo
-        video.load();
+        if (video) {
+          video.load();
+        }
 
         // icones do modal
         // let phoneIconPath = "../imgs/phone.svg";
@@ -661,17 +670,17 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (currentNodeData.email && currentNodeData.composition === "diretoria_de_marketing_internacional") {
         document.querySelector("#email-icon svg path").style.fill = "#FCD900";
       }
-      if (currentNodeData.composition === "presidencia") {
+      if (currentNodeData.composition === "presidencia" && playButton && pauseButton) {
         playButton.style.backgroundColor = "#0165B1";
         pauseButton.style.backgroundColor = "#0165B1";
         progressBar.style.backgroundColor = "#0165B1";
       }
-      if (currentNodeData.composition === "diretoria_de_gestao_e_inovacao") {
+      if (currentNodeData.composition === "diretoria_de_gestao_e_inovacao" && playButton && pauseButton) {
         playButton.style.backgroundColor = "#107b49";
         pauseButton.style.backgroundColor = "#107b49";
         progressBar.style.backgroundColor = "#107b49";
       }
-      if (currentNodeData.composition === "diretoria_de_marketing_internacional") {
+      if (currentNodeData.composition === "diretoria_de_marketing_internacional" && playButton && pauseButton) {
         playButton.style.backgroundColor = "#FCD900";
         pauseButton.style.backgroundColor = "#FCD900";
         progressBar.style.backgroundColor = "#FCD900";
@@ -702,13 +711,26 @@ document.addEventListener("DOMContentLoaded", async function () {
         let play = document.getElementById("play-button");
         let pause = document.getElementById("pause-button");
         let closeVideo = document.querySelector(".close-video");
+
+        // Verifica se já existe uma imagem com a classe 'cover-image' dentro de 'videoContainer'
+        let existingCoverImage = videoContainer.querySelector(".cover-image");
+        if (!existingCoverImage) {
+          // Se não existir, cria e adiciona ao container
+          let coverImage = document.createElement("img");
+          coverImage.classList.add("cover-image");
+          coverImage.src = currentNodeData.img_url;
+          videoContainer.appendChild(coverImage);
+        } else {
+          // Se já existir, opcionalmente atualize o src
+          existingCoverImage.src = currentNodeData.img_url;
+        }
         if (video && videoContainer && play && pause && closeVideo) {
           videoContainer.removeChild(video);
           videoContainer.removeChild(play);
           videoContainer.removeChild(pause);
           videoContainer.removeChild(closeVideo);
         } else {
-          console.log("Elemento 'video' ou 'video-container' não encontrado.");
+          // console.log("Elemento 'video' ou 'video-container' não encontrado.");
         }
         currentNodeData.phone && (document.getElementById("phone").innerHTML = `<div id="phone-icon" style="display: flex; gap: 10px; font-weight: 300; align-items: center;"><svg class="icone-telefone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 				<path fill="currentColor" d="M21,15.46l-5.27-2.11a.61.61,0,0,0-.74.18L13.2,16.29a13.14,13.14,0,0,1-4.63-4.63l2.76-2.76a.61.61,0,0,0,.18-.74L8.54,3a.6.6,0,0,0-.65-.39L3,2.89A.6.6,0,0,0,2.43,3.6,18.52,18.52,0,0,0,21.4,22.57a.6.6,0,0,0,.71-.57l.28-4.88A.61.61,0,0,0,21,15.46Z"/>
@@ -740,16 +762,19 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     }
 
-    // Obtém o modal
-    let modal = document.getElementById("modal");
-
     // Abre o modal
     function handleOpenModal() {
+      if (currentNodeData.first_name === 'Gerências da presidência') {
+        return;
+      }
       if (currentNodeData.movie_url === false) {
-        console.log("Movie URL: ", currentNodeData.movie_url);
+        // console.log("Movie URL: ", currentNodeData.movie_url);
         modalUpdateLessVideo();
       }
       if (currentNodeData.movie_url !== false) {
+        if (currentNodeData.first_name === 'Gerências da presidência') {
+          return;
+        }
         modalUpdateWithVideo();
       }
       // display inicial do modal aberto e do background
@@ -803,7 +828,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // body.appendChild(actionButtonsElement);
     // console.log("actionButtonsElement criado");
   }
-  document.dispatchEvent(new CustomEvent("OrganogramaReady"));
+
+  // document.dispatchEvent(new CustomEvent("OrganogramaReady"));
 });
 
 /***/ }),
