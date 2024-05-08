@@ -1,3 +1,6 @@
+.lessVideo {
+	display: block;
+}
 .video-container {
   position: relative;
   width: 100%;
@@ -82,6 +85,9 @@ video {
 }
 
 @media (max-width: 870px) {
+	.lessVideo {
+		display: none;
+	}
   .video-container {
     position: relative;
     width: 100%;

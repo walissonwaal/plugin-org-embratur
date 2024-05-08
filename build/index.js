@@ -707,6 +707,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Remover tag de vídeo e adicionar tag de imagem
         let videoContainer = document.getElementById("video-container");
+        videoContainer.classList.add('lessVideo');
         let video = document.getElementById("video");
         let play = document.getElementById("play-button");
         let pause = document.getElementById("pause-button");

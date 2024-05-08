@@ -172,6 +172,11 @@ svg.svg-chart-container {
     gap: 0.5rem;
     flex-wrap: wrap;
   }
+
+	.cover-image {
+		width: 100%;
+		object-fit: cover;
+	}
 }
 
 .cover-image {
