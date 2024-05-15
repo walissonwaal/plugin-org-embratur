@@ -1,11 +1,12 @@
 <?php
 /**
- * Plugin Name:       Emb Org
- * Description:       Example block scaffolded with Create Block tool.
+ * Plugin Name:       Organograma Embratur
+ * Description:       Plugin desenvolvido para a apresentação organizacional da Embratur. Facilita a criação e a gestão de organogramas no WordPress, permitindo visualizar a estrutura hierárquica da organização de maneira clara e eficiente.
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.0
- * Author:            The WordPress Contributors
+ * Author:            in.Pacto
+ * Author URI: https://inpacto.co
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       emb-org
@@ -174,3 +175,11 @@ function emb_org_enqueue_scripts() {
 	wp_enqueue_script('video-js', plugin_dir_url(__FILE__) . './src/js/video.js', array('organograma-js'), '1.0.0', true);
 }
 add_action('wp_enqueue_scripts', 'emb_org_enqueue_scripts');
+
+// Function to display author link
+function display_author_link() {
+	$author_name = 'Your Name';
+	$author_link = 'https://yourwebsite.com';
+	echo 'By <a href="' . esc_url($author_link) . '" target="_blank">' . esc_html($author_name) . '</a>';
+}
+add_action('admin_footer', 'display_author_link');

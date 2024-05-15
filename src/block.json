@@ -3,11 +3,13 @@
 	"apiVersion": 3,
 	"name": "create-block/emb-org",
 	"version": "0.1.0",
-	"title": "Emb Org",
+	"title": "Organograma Embratur",
 	"category": "widgets",
-	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
-	"example": {},
+	"description": "Plugin desenvolvido para a apresentação organizacional da Embratur. Facilita a criação e a gestão de organogramas no WordPress, permitindo visualizar a estrutura hierárquica da organização de maneira clara e eficiente.",
+	"author": {
+    "name": "in.Pacto",
+    "link": "https://inpacto.co"
+  },
 	"supports": {
 		"html": false
 	},
