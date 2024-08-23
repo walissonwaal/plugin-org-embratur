@@ -5,18 +5,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const cdnImportD3 = document.createElement("script");
 	cdnImportD3.src = "https://d3js.org/d3.v7.min.js";
 	cdnImportD3.onload = function () {
-		console.log("D3 carregado");
+		// console.log("D3 carregado");
 
 		const cdnImportD3OrgChart = document.createElement("script");
 		cdnImportD3OrgChart.src = "https://cdn.jsdelivr.net/npm/d3-org-chart@2.6.0";
 		cdnImportD3OrgChart.onload = function () {
-			console.log("D3 Org Chart carregado");
+			// console.log("D3 Org Chart carregado");
 
 			const cdnImportD3Flextree = document.createElement("script");
 			cdnImportD3Flextree.src =
 				"https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js";
 			cdnImportD3Flextree.onload = function () {
-				console.log("D3 Flextree carregado");
+				// console.log("D3 Flextree carregado");
 			};
 			body.appendChild(cdnImportD3Flextree);
 		};
@@ -34,9 +34,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const container = document.getElementById("organograma-container");
 
 	if (container) {
-		console.log("Container obtido.");
-		console.log("Obtendo dados da API...");
-		await fetch("/wp-json/emb-org/v1/membros")
+		// console.log("Container obtido.");
+		// console.log("Obtendo dados da API...");
+		await fetch("/wp-json/emb-org/v1/membros/")
 			.then((response) => response.json())
 			.then((data) => {
 				const [min, max] = d3.extent(data, (d) => d.value);
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 					d._radius = Math.round(radiusScale(d.value) * 10) / 10;
 				});
 				// cdnImportD3OrgChart.onload = function () {
-				console.log("Dados recebidos:", data);
+				// console.log("Dados recebidos:", data);
 				createOrganizationChart(container, data);
 				// };
 			})
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	function createOrganizationChart(container, data) {
 		if (!data || !data.length) {
-			console.log("Nenhum membro encontrado.");
+			// console.log("Nenhum membro encontrado.");
 			container.innerHTML = "<p>Nenhum membro encontrado.</p>";
 			return;
 		}
